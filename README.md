@@ -1,9 +1,8 @@
 # PRD Skills
 
-> AI 驱动的产品需求文档（PRD）生成工具集，为 Trae IDE 提供智能化的 PRD 管理能力。
+> AI 驱动的产品需求文档（PRD）生成工具集，为 Claude Code 提供智能化的 PRD 管理能力。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Trae IDE](https://img.shields.io/badge/Trae%20IDE-Compatible-green.svg)](https://trae.ai)
 
 ## ✨ 核心特性
 
@@ -32,21 +31,31 @@
 - 完整的 CHANGELOG 记录
 - 变更前后对比，便于回溯
 
+### 🎨 PRD 转原型网页
+- 自动解析 PRD 文档内容
+- 调用 frontend-design skill 生成可交互原型
+- 支持本地预览和移动端访问
+
 ## 🚀 快速开始
 
 ### 前置要求
 
-- Trae IDE 已安装
+- Claude Code 已安装
 - （可选）XMind MCP 服务 - 用于 XMind 文件导入功能
+- （可选）frontend-design skill - 用于 PRD 转原型功能
 
 ### 安装
 
-将 `prd-init` 和 `prd-suite` 目录复制到你的 Trae 项目 `.trae/skills/` 目录下：
+使用 npx 命令一键安装：
 
 ```bash
-cp -r prd-init /path/to/your/project/.trae/skills/
-cp -r prd-suite /path/to/your/project/.trae/skills/
+npx skills add https://github.com/guoxiangjie/skills
 ```
+
+安装后会自动创建以下技能：
+- `prd-init` - PRD 文档包初始化
+- `prd-suite` - PRD 文档管理
+- `prd-to-prototype` - PRD 转原型网页
 
 ### 使用方式
 
@@ -100,6 +109,29 @@ project/
 /prd-suite delete module
 ```
 
+#### 6. 生成可交互原型
+
+```
+/prd-to-prototype generate
+```
+
+根据 PRD 文档生成可交互原型网页：
+- 自动扫描项目中的 PRD 文件
+- 解析 PRD 内容提取界面设计信息
+- 调用 frontend-design skill 生成原型
+- 输出到 `prototype/` 目录
+
+#### 7. 预览原型
+
+```
+/prd-to-prototype preview
+```
+
+启动本地服务器预览原型：
+- 自动打开浏览器
+- 支持移动端访问
+- 支持热重载
+
 ## 📁 目录结构
 
 ```
@@ -138,13 +170,24 @@ project/
 │       ├── module_qa_template.md     # 问答模式模板
 │       └── error_codes_reference.md  # 错误码参考
 │
+├── prd-to-prototype/
+│   ├── SKILL.md              # Skill 入口
+│   ├── commands/
+│   │   ├── generate.md       # 生成原型命令
+│   │   └── preview.md        # 预览原型命令
+│   ├── config/
+│   │   └── config.json       # 配置文件
+│   └── templates/
+│       └── prototype_prompt_template.md  # 原型生成提示词模板
+│
 └── README.md
 ```
 
 ## 🛠️ 技术栈
 
-- **Trae IDE Skills Framework** - AI 技能框架
+- **Claude Code Skills Framework** - AI 技能框架
 - **XMind MCP** - XMind 文件解析服务
+- **frontend-design skill** - 原型生成服务
 - **Markdown** - 文档格式标准
 
 ## 📖 文档规范
@@ -218,8 +261,9 @@ project/
 
 ## 🙏 致谢
 
-- Trae IDE 团队提供的 Skills Framework
+- Claude Code 团队提供的 Skills Framework
 - XMind MCP 服务
+- frontend-design skill
 - 所有贡献者
 
 ---
