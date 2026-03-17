@@ -1,0 +1,23 @@
+{
+  "name": "prd-init",
+  "description": "创建标准PRD文档包结构。新项目启动或初始化PRD工作空间时调用。",
+  "version": "1.0.0",
+  "author": "郭向杰",
+  "templates": {
+    "README": "templates/README.md",
+    "PRD_INDEX": "templates/PRD_INDEX.md",
+    "CHANGELOG": "templates/CHANGELOG.md"
+  },
+  "commands": {
+    "init": "commands/init.md"
+  },
+  "defaultCommand": "init",
+  "variables": {
+    "CURRENT_DATE": "YYYY-MM-DD",
+    "PROJECT_NAME": "目标文件夹名称"
+  },
+  "language": {
+    "thought": "中文",
+    "response": "中文"
+  }
+}

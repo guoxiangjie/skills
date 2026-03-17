@@ -1,0 +1,35 @@
+{
+  "name": "prd-suite",
+  "description": "PRD文档管理，提供主PRD和模块PRD的创建与更新功能。支持自然语言需求模板快速生成。",
+  "version": "1.0.0",
+  "author": "郭向杰",
+  "commands": {
+    "create": "commands/create.md",
+    "update": "commands/update.md",
+    "delete": "commands/delete.md"
+  },
+  "defaultCommand": "create",
+  "templates": {
+    "main_prd": "templates/main_prd_template.md",
+    "module_prd": "templates/module_prd_template.md",
+    "requirement": "templates/requirement_template.md"
+  },
+  "variables": {
+    "PROJECT_NAME": "项目名称",
+    "AUTHOR": "作者",
+    "DATE": "YYYY-MM-DD",
+    "VERSION": "1.0",
+    "STATUS": "未评审",
+    "CURRENT_DATE": "YYYY-MM-DD"
+  },
+  "features": {
+    "naturalLanguageTemplate": true,
+    "smartInference": true,
+    "quickMode": true,
+    "versionManagement": true
+  },
+  "language": {
+    "thought": "中文",
+    "response": "中文"
+  }
+}
