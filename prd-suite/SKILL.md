@@ -31,7 +31,9 @@ prd-suite/
 ├── templates/        # 模板文件
 │   ├── main_prd_template.md    # 主PRD模板
 │   ├── module_prd_template.md  # 模块PRD模板
-│   └── requirement_template.md # 需求模板
+│   ├── requirement_template.md # 需求模板
+│   ├── xmind_content_template.md # XMind内容解析模板
+│   └── changelog_format.md     # CHANGELOG格式
 ├── config/           # 配置文件
 │   └── config.json   # 配置信息
 └── scripts/          # 辅助脚本
@@ -84,6 +86,7 @@ prd-suite/
 - `main_prd_template.md` - 主PRD文档模板
 - `module_prd_template.md` - 模块PRD文档模板
 - `requirement_template.md` - 自然语言需求模板
+- `xmind_content_template.md` - XMind 内容解析文档模板
 - `changelog_format.md` - CHANGELOG 格式规范
 
 ## 辅助脚本
@@ -170,9 +173,10 @@ prd-suite/
 支持从 XMind 思维导图文件直接生成主 PRD：
 
 1. **XMind MCP 集成**：通过 XMind MCP 服务读取和解析 xmind 文件
-2. **智能内容提取**：从思维导图结构中提取 PRD 所需信息
-3. **中间文档生成**：生成 `xmind_content.md` 内容文档供确认
-4. **模板格式输出**：按照主 PRD 模板格式生成最终文档
+2. **完整内容解析**：解析所有节点内容，包括标题、备注、标签、链接等
+3. **智能分析总结**：基于全部节点内容，经过分析思考，总结关键信息
+4. **中间文档生成**：生成 `xmind_content.md` 内容文档供确认
+5. **模板格式输出**：按照主 PRD 模板格式生成最终文档
 
 ### 使用条件
 
@@ -184,6 +188,23 @@ prd-suite/
 - `mcp_XMind_read_xmind`：读取和解析 xmind 文件
 - `mcp_XMind_extract_node`：提取特定节点
 - `mcp_XMind_search_nodes`：搜索节点内容
+
+### 内容提取原则
+
+从 XMind 思维导图中提取 PRD 信息时，遵循以下原则：
+
+1. **整体思考总结**：不是机械地按关键词提取，而是先完整解析所有节点内容，再综合分析思考，总结关键信息
+2. **提取内容**：
+   - 功能概述：产品/项目的核心功能是什么，解决什么问题
+   - 使用人（用户角色）：目标用户是谁，有哪些角色
+   - 目标：产品/项目的目标是什么
+   - 功能模块列表：整理出功能模块
+   - 业务流程：总结核心业务流程
+3. **不提取内容**：
+   - 非功能需求
+   - 验收标准
+   - 项目背景
+4. **不显示节点来源**：总结内容不标注"从哪个节点提取"
 
 ### 流程说明
 
