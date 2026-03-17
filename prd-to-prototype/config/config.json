@@ -1,0 +1,74 @@
+{
+  "name": "prd-to-prototype",
+  "version": "1.0.0",
+  "description": "将PRD文档转换为可交互原型网页",
+  "author": "PRD Template",
+  "dependencies": {
+    "frontend-design": {
+      "required": true,
+      "installHint": "请在 Trae 中搜索并安装 frontend-design skill"
+    }
+  },
+  "commands": {
+    "default": "generate",
+    "list": [
+      {
+        "name": "generate",
+        "description": "根据PRD文档生成可交互原型网页",
+        "path": "commands/generate.md"
+      },
+      {
+        "name": "preview",
+        "description": "预览已生成的原型网页",
+        "path": "commands/preview.md"
+      }
+    ]
+  },
+  "templates": {
+    "prototypePrompt": "templates/prototype_prompt_template.md"
+  },
+  "output": {
+    "directory": "prototype",
+    "files": [
+      "index.html",
+      "css/style.css",
+      "js/main.js"
+    ]
+  },
+  "variables": {
+    "PROJECT_NAME": {
+      "source": "main_prd",
+      "section": "文档基础信息",
+      "field": "项目名称"
+    },
+    "BACKGROUND": {
+      "source": "main_prd",
+      "section": "项目背景与目标",
+      "field": "背景说明"
+    },
+    "OBJECTIVES": {
+      "source": "main_prd",
+      "section": "项目背景与目标",
+      "field": "产品目标"
+    },
+    "USER_ROLES": {
+      "source": "main_prd",
+      "section": "用户故事概述",
+      "field": "用户角色与权限"
+    },
+    "MODULES": {
+      "source": "main_prd",
+      "section": "功能模块清单",
+      "field": "模块列表"
+    }
+  },
+  "prdPatterns": {
+    "mainPrd": "*_main_prd.md",
+    "modulePrd": "*_module_prd.md"
+  },
+  "server": {
+    "defaultPort": 8080,
+    "portRange": [8080, 8090],
+    "host": "localhost"
+  }
+}
