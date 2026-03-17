@@ -1,12 +1,13 @@
 {
   "name": "prd-to-prototype",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "将PRD文档转换为可交互原型网页",
   "author": "PRD Template",
   "dependencies": {
     "frontend-design": {
       "required": true,
-      "installHint": "请在 Trae 中搜索并安装 frontend-design skill"
+      "purpose": "获取页面风格和主题色",
+      "installHint": "使用 npx skills add 命令安装 frontend-design skill"
     }
   },
   "commands": {
@@ -25,15 +26,34 @@
     ]
   },
   "templates": {
-    "prototypePrompt": "templates/prototype_prompt_template.md"
+    "prototypePrompt": "templates/prototype_prompt_template.md",
+    "viteTemplate": "templates/vite_template.md",
+    "pageTemplate": "templates/page_template.md",
+    "componentTemplate": "templates/component_template.md"
+  },
+  "techStack": {
+    "build": "Vite",
+    "framework": "React 18",
+    "uiFramework": {
+      "web": "Ant Design 5.x",
+      "mobile": "Ant Design Mobile 5.x"
+    },
+    "charts": "Ant Design Charts",
+    "icons": "lucide-react",
+    "router": "React Router 6"
   },
   "output": {
     "directory": "prototype",
-    "files": [
-      "index.html",
-      "css/style.css",
-      "js/main.js"
-    ]
+    "structure": {
+      "src": {
+        "components": "通用组件",
+        "pages": "页面组件",
+        "layouts": "布局组件",
+        "router": "路由配置",
+        "styles": "样式文件",
+        "utils": "工具函数"
+      }
+    }
   },
   "variables": {
     "PROJECT_NAME": {
@@ -60,6 +80,14 @@
       "source": "main_prd",
       "section": "功能模块清单",
       "field": "模块列表"
+    },
+    "PRIMARY_COLOR": {
+      "source": "frontend-design",
+      "field": "主题色"
+    },
+    "DESIGN_STYLE": {
+      "source": "frontend-design",
+      "field": "设计风格"
     }
   },
   "prdPatterns": {
@@ -67,8 +95,55 @@
     "modulePrd": "*_module_prd.md"
   },
   "server": {
-    "defaultPort": 8080,
-    "portRange": [8080, 8090],
+    "defaultPort": 3000,
+    "portRange": [3000, 3010],
     "host": "localhost"
-  }
+  },
+  "progressSteps": [
+    {
+      "step": 1,
+      "name": "依赖检测",
+      "description": "检查 frontend-design skill 是否可用"
+    },
+    {
+      "step": 2,
+      "name": "平台选择",
+      "description": "让用户选择目标平台"
+    },
+    {
+      "step": 3,
+      "name": "扫描 PRD 文件",
+      "description": "查找项目中的所有 PRD 文件"
+    },
+    {
+      "step": 4,
+      "name": "解析 PRD 内容",
+      "description": "提取项目信息和模块清单"
+    },
+    {
+      "step": 5,
+      "name": "获取设计规范",
+      "description": "调用 frontend-design skill 获取页面风格和主题色"
+    },
+    {
+      "step": 6,
+      "name": "初始化项目",
+      "description": "使用 Vite 创建 React 项目"
+    },
+    {
+      "step": 7,
+      "name": "生成页面组件",
+      "description": "为每个页面生成 React 组件"
+    },
+    {
+      "step": 8,
+      "name": "生成通用组件",
+      "description": "生成表单、列表、图表组件"
+    },
+    {
+      "step": 9,
+      "name": "完善项目配置",
+      "description": "配置路由、主题、样式"
+    }
+  ]
 }

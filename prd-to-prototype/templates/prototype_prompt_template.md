@@ -2,7 +2,79 @@
 
 ## 模板说明
 
-此模板用于将 PRD 文档内容转换为 frontend-design skill 可理解的格式。
+此模板用于将 PRD 文档内容转换为现代前端项目结构。
+
+## 技术栈
+
+- **构建工具**：Vite
+- **前端框架**：React 18
+- **UI 框架**：
+  - Web 端：Ant Design 5.x
+  - 移动端：Ant Design Mobile 5.x
+- **图表库**：Ant Design Charts
+- **图标库**：lucide-react
+- **路由**：React Router 6
+
+## 输出要求
+
+### 项目结构
+
+```
+prototype/
+├── public/
+├── src/
+│   ├── components/          # 通用组件
+│   ├── pages/               # 页面组件
+│   ├── layouts/             # 布局组件
+│   ├── router/              # 路由配置
+│   ├── styles/              # 样式文件
+│   ├── utils/               # 工具函数
+│   ├── App.jsx
+│   └── main.jsx
+├── package.json
+└── vite.config.js
+```
+
+### 页面组件要求
+
+1. **使用 Ant Design 组件**
+   - 布局：Layout, Row, Col, Space
+   - 导航：Menu, Breadcrumb, Tabs
+   - 表单：Form, Input, Select, DatePicker, Button
+   - 数据展示：Table, List, Card, Descriptions
+   - 图表：Line, Column, Pie, Area (from @ant-design/charts)
+
+2. **使用 lucide-react 图标**
+   ```jsx
+   import { Home, User, Settings, Search } from 'lucide-react';
+   ```
+
+3. **组件结构**
+   ```jsx
+   import React from 'react';
+   import { Card } from 'antd';
+   import { Home } from 'lucide-react';
+   import './style.module.css';
+
+   const PageName = () => {
+     return (
+       <div className="page-container">
+         <Card>
+           <Home size={24} />
+         </Card>
+       </div>
+     );
+   };
+
+   export default PageName;
+   ```
+
+4. **交互实现**
+   - 所有按钮可点击
+   - 表单可提交
+   - 列表可翻页
+   - 图表可交互
+   - 页面可导航
 
 ## 提示词结构
 
@@ -17,6 +89,11 @@
 {{#each OBJECTIVES}}
 - {{this}}
 {{/each}}
+
+## 设计规范
+
+**主题色**：{{PRIMARY_COLOR}}
+**设计风格**：{{DESIGN_STYLE}}
 
 ## 用户角色
 
@@ -132,54 +209,57 @@
 | {{id}} | {{description}} | {{scenario}} |
 {{/each}}
 
-## 样式要求
+## 技术实现要求
 
-### 整体风格
-- **设计风格**：{{design_style}}
-- **主色调**：{{primary_color}}
-- **辅助色**：{{secondary_color}}
+### 依赖安装
 
-### 响应式要求
-- **桌面端**：{{desktop_requirement}}
-- **平板端**：{{tablet_requirement}}
-- **移动端**：{{mobile_requirement}}
+```bash
+# Web 端
+npm install antd @ant-design/charts lucide-react react-router-dom axios dayjs
 
-### 交互反馈
-- **加载状态**：{{loading_state}}
-- **成功提示**：{{success_message}}
-- **错误提示**：{{error_message}}
+# 移动端
+npm install antd-mobile @ant-design/charts lucide-react react-router-dom axios dayjs
+```
 
-## 技术要求
+### 主题配置
 
-### 浏览器兼容性
-{{#each BROWSER_COMPATIBILITY}}
-- {{browser}}：{{version}}
-{{/each}}
+```jsx
+// src/App.jsx
+import { ConfigProvider } from 'antd';
 
-### 性能要求
-- **页面加载时间**：{{page_load_time}}
-- **接口响应时间**：{{api_response_time}}
+const theme = {
+  token: {
+    colorPrimary: '{{PRIMARY_COLOR}}',
+    borderRadius: 6,
+  },
+};
 
-## 输出要求
+const App = () => (
+  <ConfigProvider theme={theme}>
+    {/* 应用内容 */}
+  </ConfigProvider>
+);
+```
 
-请生成以下文件：
-1. `index.html` - 主入口文件
-2. `css/style.css` - 样式文件
-3. `js/main.js` - 交互脚本
-4. `assets/` - 资源文件夹
+### 路由配置
 
-### 页面要求
-- 使用语义化 HTML 标签
-- CSS 采用 BEM 命名规范
-- JavaScript 实现基本交互功能
-- 支持响应式布局
-- 包含必要的动画效果
+```jsx
+// src/router/index.jsx
+import { createBrowserRouter } from 'react-router-dom';
 
-### 交互要求
-- 所有按钮可点击
-- 表单可提交
-- 页面可导航
-- 支持基本的数据展示
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      // ... 其他路由
+    ],
+  },
+]);
+
+export default router;
+```
 ```
 
 ## 变量说明
@@ -196,6 +276,8 @@
 | MODULE_RELATIONSHIP_DIAGRAM | 主 PRD - 功能模块清单 | 模块关系 Mermaid 图 |
 | BUSINESS_FLOWS | 主 PRD - 核心业务流程 | 业务流程列表 |
 | BUSINESS_RULES | 模块 PRD - 业务规则 | 业务规则表 |
+| PRIMARY_COLOR | frontend-design skill | 主题色 |
+| DESIGN_STYLE | frontend-design skill | 设计风格 |
 
 ### 模块级变量
 
@@ -223,7 +305,7 @@
 
 ### ASCII 布局图转换
 
-将 ASCII 布局图转换为文字描述：
+将 ASCII 布局图转换为 Ant Design 布局组件：
 
 **原始 ASCII 图：**
 ```
@@ -243,19 +325,32 @@
 +----------------------------------------+
 ```
 
-**转换后的描述：**
-```
-页面采用上下布局：
-- 顶部：页面标题区域，居中显示
-- 中部：左右分栏布局
-  - 左侧区域：占页面宽度的 40%
-  - 右侧区域：占页面宽度的 60%
-- 底部：操作按钮区域，居中显示
+**转换后的代码：**
+```jsx
+<div className="page-container">
+  <div className="page-header">
+    <h1>页面标题</h1>
+  </div>
+  <Row gutter={16}>
+    <Col span={10}>
+      <Card>左侧区域</Card>
+    </Col>
+    <Col span={14}>
+      <Card>右侧区域</Card>
+    </Col>
+  </Row>
+  <div className="page-footer">
+    <Space>
+      <Button type="primary">确定</Button>
+      <Button>取消</Button>
+    </Space>
+  </div>
+</div>
 ```
 
 ### Mermaid 流程图转换
 
-将 Mermaid 流程图转换为文字描述：
+将 Mermaid 流程图转换为交互逻辑：
 
 **原始 Mermaid 图：**
 ```mermaid
@@ -266,19 +361,22 @@ flowchart TD
   C -->|失败| E[错误提示]
 ```
 
-**转换后的描述：**
-```
-流程说明：
-1. 用户开始操作
-2. 执行用户操作
-3. 进行条件判断
-   - 成功：展示结果
-   - 失败：显示错误提示
+**转换后的逻辑：**
+```jsx
+const handleSubmit = async () => {
+  try {
+    const result = await submitForm();
+    message.success('操作成功');
+    navigate('/success');
+  } catch (error) {
+    message.error(error.message);
+  }
+};
 ```
 
 ### 用户故事转换
 
-将用户故事转换为交互需求：
+将用户故事转换为组件和交互：
 
 **原始用户故事：**
 ```
@@ -295,68 +393,41 @@ US-1: 用户登录
 - 错误账号密码显示错误提示
 ```
 
-**转换后的交互需求：**
-```
-登录功能：
-- 页面元素：账号输入框、密码输入框、登录按钮
-- 交互流程：
-  1. 用户输入账号和密码
-  2. 点击登录按钮
-  3. 验证账号密码
-  4. 成功：跳转到首页
-  5. 失败：显示错误提示
-- 验证规则：
-  - 账号：必填，邮箱格式
-  - 密码：必填，至少6位
-```
+**转换后的组件：**
+```jsx
+import React from 'react';
+import { Form, Input, Button, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { LogIn } from 'lucide-react';
 
-## 使用示例
+const LoginForm = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-### 输入（PRD 内容）
+  const handleSubmit = async (values) => {
+    try {
+      // 登录逻辑
+      message.success('登录成功');
+      navigate('/');
+    } catch (error) {
+      message.error('账号或密码错误');
+    }
+  };
 
-```markdown
-# 电商平台 产品需求文档
+  return (
+    <Form form={form} onFinish={handleSubmit}>
+      <Form.Item name="username" rules={[{ required: true }]}>
+        <Input placeholder="账号" />
+      </Form.Item>
+      <Form.Item name="password" rules={[{ required: true }]}>
+        <Input.Password placeholder="密码" />
+      </Form.Item>
+      <Button type="primary" htmlType="submit" icon={<LogIn size={16} />}>
+        登录
+      </Button>
+    </Form>
+  );
+};
 
-## 项目背景与目标
-
-### 背景说明
-打造一个面向年轻用户的电商平台...
-
-### 产品目标
-- 提供便捷的购物体验
-- 支持多种支付方式
-- 实现个性化推荐
-
-## 功能模块清单
-
-| 编号 | 模块名称 | 描述 | 优先级 |
-|------|---------|------|--------|
-| M-01 | 用户管理 | 用户注册、登录、个人信息管理 | 高 |
-| M-02 | 商品管理 | 商品展示、搜索、分类 | 高 |
-| M-03 | 购物车 | 商品加入购物车、数量修改 | 高 |
-```
-
-### 输出（提示词）
-
-```markdown
-# 原型生成需求
-
-## 项目概述
-
-**项目名称**：电商平台
-**项目背景**：打造一个面向年轻用户的电商平台...
-**项目目标**：
-- 提供便捷的购物体验
-- 支持多种支付方式
-- 实现个性化推荐
-
-## 功能模块
-
-| 编号 | 模块名称 | 描述 | 优先级 |
-|------|---------|------|--------|
-| M-01 | 用户管理 | 用户注册、登录、个人信息管理 | 高 |
-| M-02 | 商品管理 | 商品展示、搜索、分类 | 高 |
-| M-03 | 购物车 | 商品加入购物车、数量修改 | 高 |
-
-...（后续内容）
+export default LoginForm;
 ```
