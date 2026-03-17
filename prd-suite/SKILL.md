@@ -180,7 +180,7 @@ prd-suite/
 
 ### 支持的 XMind MCP 工具
 
-- `mcp_XMind_list_xmind_directory`：扫描目录下的 xmind 文件
+- `mcp_XMind_list_xmind_directory`：扫描 XMind MCP 配置目录下的 xmind 文件
 - `mcp_XMind_read_xmind`：读取和解析 xmind 文件
 - `mcp_XMind_extract_node`：提取特定节点
 - `mcp_XMind_search_nodes`：搜索节点内容
