@@ -259,14 +259,13 @@ project/
 
 ## 📄 许可证
 
-本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件
+本项目仅用于众诚内部使用
 
 ## 🙏 致谢
 
 - Claude Code 团队提供的 Skills Framework
 - XMind MCP 服务
 - frontend-design skill
-- 所有贡献者
 
 ---
 
