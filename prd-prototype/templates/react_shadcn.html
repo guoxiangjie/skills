@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/shadcn-ui@latest/dist/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            return (
+                <div>
+                    {/* 导航栏 */}
+                    <nav className="bg-white shadow-lg">
+                        <div className="max-w-7xl mx-auto px-4">
+                            <div className="flex justify-between">
+                                <div className="flex space-x-7">
+                                    <a href="index.html" className="flex items-center py-4 px-2">
+                                        <span className="font-semibold text-gray-500 text-lg">{{PROJECT_NAME}}</span>
+                                    </a>
+                                </div>
+                                <div className="hidden md:flex items-center space-x-1">
+                                    <a href="dashboard.html" className="py-4 px-2 text-blue-500 border-b-4 border-blue-500 font-semibold">仪表盘</a>
+                                    {/* NAV_ITEMS */}
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* 主内容区 */}
+                    <div className="max-w-7xl mx-auto px-4 py-8">
+                        {/* PAGE_CONTENT */}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
