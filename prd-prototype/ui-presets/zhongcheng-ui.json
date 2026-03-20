@@ -1,0 +1,292 @@
+{
+  "name": "众诚 UI 规范",
+  "version": "1.0.0",
+  "description": "基于实验室考试系统设计系统 UI 规范",
+  "sourceFiles": [
+    "UI 规范.md",
+    "WEBUI 界面.md"
+  ],
+
+  "colors": {
+    "brand": {
+      "primary": "#246FE5",
+      "hover": "#1F5CC1",
+      "light": "#cce6ff"
+    },
+    "neutral": {
+      "white": "#FFFFFF",
+      "gray50": "#F7F9FA",
+      "gray100": "#F1F4F6",
+      "gray200": "#EDF1F5",
+      "gray300": "#E1E5EB",
+      "gray400": "#C4C9CF",
+      "gray500": "#8B949E",
+      "gray600": "#626C78",
+      "gray700": "#424C59",
+      "gray800": "#2E3742",
+      "gray900": "#1B2129"
+    },
+    "functional": {
+      "info": {
+        "main": "#246FE5",
+        "text": "#215DD9",
+        "bg": "#EBF6FF"
+      },
+      "success": {
+        "main": "#3FBE72",
+        "text": "#15AE55",
+        "bg": "#EBFFEB"
+      },
+      "warning": {
+        "main": "#FFB800",
+        "text": "#F29F00",
+        "bg": "#FFFBE6"
+      },
+      "error": {
+        "main": "#F55047",
+        "text": "#E63C35",
+        "bg": "#FFF5F5"
+      }
+    }
+  },
+
+  "typography": {
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    "sizes": {
+      "extraLargeTitle": { "size": "30px", "lineHeight": "40px", "weight": "Medium" },
+      "h1": { "size": "24px", "lineHeight": "32px", "weight": "Medium" },
+      "h2": { "size": "20px", "lineHeight": "28px", "weight": "Medium" },
+      "h3": { "size": "16px", "lineHeight": "24px", "weight": "Medium" },
+      "body": { "size": "14px", "lineHeight": "22px", "weight": "Regular" },
+      "caption": { "size": "12px", "lineHeight": "18px", "weight": "Regular" }
+    },
+    "colors": {
+      "primary": "#1B2129",
+      "secondary": "#2E3742",
+      "hint": "#626C78",
+      "disabled": "#C4C9CF"
+    }
+  },
+
+  "spacing": {
+    "unit": "4px",
+    "scale": [4, 8, 12, 16, 24, 32, 40, 48, 64, 96],
+    "presets": {
+      "cardGap": "16px",
+      "contentToCard": { "vertical": "24px", "horizontal": "32px" },
+      "buttonGapFilled": "12px",
+      "buttonGapText": "16px",
+      "buttonGapMixed": "24px",
+      "filterItemGap": "24px",
+      "labelToInput": "8px",
+      "iconToText": "16px",
+      "pagePadding": "16px"
+    }
+  },
+
+  "layout": {
+    "topNav": {
+      "height": "47px",
+      "padding": "0 24px",
+      "shadow": "0 1px 0 rgba(0,0,0,0.06)"
+    },
+    "sidebar": {
+      "width": "216px",
+      "menuItemHeight": "56px",
+      "padding": "0 24px 0 24px",
+      "iconTextGap": "16px"
+    },
+    "pageTab": {
+      "height": "44px",
+      "padding": "0 16px",
+      "tabHeight": "28px",
+      "tabPadding": "0 12px",
+      "tabGap": "12px"
+    },
+    "pageTitle": {
+      "height": "40px",
+      "padding": "0 16px",
+      "titleSize": "16px",
+      "titleWeight": "Bold"
+    },
+    "filterBar": {
+      "height": "30px",
+      "padding": "0 16px"
+    },
+    "table": {
+      "headerHeight": "37px",
+      "rowHeight": "47px",
+      "headerBg": "#F1F4F6"
+    },
+    "dialog": {
+      "headerHeight": "56px",
+      "footerHeight": "56px",
+      "padding": "32px",
+      "borderRadius": "8px",
+      "sizes": {
+        "small": { "width": "480px" },
+        "medium": { "width": "840px", "maxHeight": "763px" },
+        "large": { "width": "1200px" },
+        "fullscreen": { "width": "1920px", "height": "1080px" }
+      }
+    },
+    "drawer": {
+      "minWidth": "240px",
+      "maxWidth": "960px"
+    }
+  },
+
+  "components": {
+    "button": {
+      "sizes": {
+        "large": { "height": "32px", "paddingX": "16px", "minWidth": "80px" },
+        "medium": { "height": "24px", "paddingX": "16px", "minWidth": "80px" },
+        "small": { "height": "16px", "paddingX": "12px" }
+      },
+      "levels": {
+        "primary": { "bg": "#246FE5", "text": "#FFFFFF" },
+        "secondary": { "bg": "transparent", "text": "#246FE5", "border": "#246FE5" },
+        "text": { "bg": "transparent", "text": "#246FE5" },
+        "danger": { "bg": "#F55047", "text": "#FFFFFF" }
+      },
+      "states": {
+        "hover": { "bg": "#1F5CC1" },
+        "disabled": { "bg": "#C4C9CF", "text": "#8B949E" }
+      }
+    },
+    "input": {
+      "height": "32px",
+      "border": "#C4C9CF",
+      "borderRadius": "4px",
+      "padding": "0 12px",
+      "focusBorder": "#246FE5",
+      "errorBorder": "#F55047",
+      "placeholderColor": "#C4C9CF"
+    },
+    "table": {
+      "header": {
+        "bg": "#F1F4F6",
+        "text": "#626C78",
+        "border": "#E1E5EB",
+        "height": "37px"
+      },
+      "row": {
+        "height": "47px",
+        "text": "#1B2129",
+        "border": "#E1E5EB",
+        "hoverBg": "#EDF1F5"
+      }
+    },
+    "card": {
+      "padding": "24px",
+      "borderRadius": "12px",
+      "shadow": "0 10px 20px rgba(0,0,0,0.05)",
+      "bg": "#FFFFFF"
+    },
+    "tag": {
+      "high": { "bg": "色系 500", "text": "#FFFFFF" },
+      "medium": { "bg": "色系 100", "text": "色系 700" },
+      "low": { "bg": "#EDF1F5", "text": "#1B2129" }
+    },
+    "badge": {
+      "dot": { "size": "8px", "color": "#F55047" },
+      "count": { "minWidth": "18px", "height": "18px", "bg": "#F55047", "text": "#FFFFFF" }
+    },
+    "message": {
+      "topOffset": "36px",
+      "minWidth": "240px",
+      "maxWidth": "600px",
+      "duration": "3s"
+    },
+    "notification": {
+      "width": "386px",
+      "topOffset": "36px",
+      "rightOffset": "20px",
+      "gap": "20px",
+      "maxCount": 4,
+      "duration": "5s"
+    }
+  },
+
+  "interactions": {
+    "transitions": {
+      "default": "0.2s ease",
+      "button": "0.15s ease",
+      "dropdown": "0.2s ease"
+    },
+    "loading": {
+      "global": { "size": "200x200px", "timeout": "10s" },
+      "local": { "size": "52x52px", "timeout": "10s" },
+      "component": { "size": "16x16px" }
+    },
+    "emptyState": {
+      "illustrationSize": { "normal": "120x102px", "small": "90x76px" },
+      "position": "center at 2/5 height"
+    }
+  },
+
+  "tailwindConfig": {
+    "theme": {
+      "extend": {
+        "colors": {
+          "brand": {
+            "DEFAULT": "#246FE5",
+            "hover": "#1F5CC1",
+            "light": "#cce6ff"
+          },
+          "gray": {
+            "50": "#F7F9FA",
+            "100": "#F1F4F6",
+            "200": "#EDF1F5",
+            "300": "#E1E5EB",
+            "400": "#C4C9CF",
+            "500": "#8B949E",
+            "600": "#626C78",
+            "700": "#424C59",
+            "800": "#2E3742",
+            "900": "#1B2129"
+          },
+          "success": {
+            "DEFAULT": "#3FBE72",
+            "text": "#15AE55",
+            "bg": "#EBFFEB"
+          },
+          "warning": {
+            "DEFAULT": "#FFB800",
+            "text": "#F29F00",
+            "bg": "#FFFBE6"
+          },
+          "error": {
+            "DEFAULT": "#F55047",
+            "text": "#E63C35",
+            "bg": "#FFF5F5"
+          }
+        },
+        "spacing": {
+          "card": "16px",
+          "content": "24px",
+          "page": "16px"
+        },
+        "fontSize": {
+          "xl-title": ["30px", "40px"],
+          "h1": ["24px", "32px"],
+          "h2": ["20px", "28px"],
+          "h3": ["16px", "24px"],
+          "body": ["14px", "22px"],
+          "caption": ["12px", "18px"]
+        },
+        "height": {
+          "top-nav": "47px",
+          "page-tab": "44px",
+          "page-title": "40px",
+          "filter-bar": "30px",
+          "table-header": "37px",
+          "table-row": "47px",
+          "dialog-header": "56px",
+          "dialog-footer": "56px",
+          "sidebar-item": "56px"
+        }
+      }
+    }
+  }
+}

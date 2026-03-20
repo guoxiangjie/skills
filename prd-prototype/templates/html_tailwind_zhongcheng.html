@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // 众诚 UI 规范 - Tailwind 配置
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // 品牌色
+                        brand: {
+                            DEFAULT: '#246FE5',
+                            hover: '#1F5CC1',
+                            light: '#cce6ff'
+                        },
+                        // 中性色
+                        gray: {
+                            50: '#F7F9FA',
+                            100: '#F1F4F6',
+                            200: '#EDF1F5',
+                            300: '#E1E5EB',
+                            400: '#C4C9CF',
+                            500: '#8B949E',
+                            600: '#626C78',
+                            700: '#424C59',
+                            800: '#2E3742',
+                            900: '#1B2129'
+                        },
+                        // 功能色
+                        success: {
+                            DEFAULT: '#3FBE72',
+                            text: '#15AE55',
+                            bg: '#EBFFEB'
+                        },
+                        warning: {
+                            DEFAULT: '#FFB800',
+                            text: '#F29F00',
+                            bg: '#FFFBE6'
+                        },
+                        error: {
+                            DEFAULT: '#F55047',
+                            text: '#E63C35',
+                            bg: '#FFF5F5'
+                        },
+                        info: {
+                            DEFAULT: '#246FE5',
+                            text: '#215DD9',
+                            bg: '#EBF6FF'
+                        }
+                    },
+                    fontSize: {
+                        'xl-title': ['30px', '40px'],
+                        'h1': ['24px', '32px'],
+                        'h2': ['20px', '28px'],
+                        'h3': ['16px', '24px'],
+                        'body': ['14px', '22px'],
+                        'caption': ['12px', '18px']
+                    },
+                    height: {
+                        'top-nav': '47px',
+                        'page-tab': '44px',
+                        'page-title': '40px',
+                        'filter-bar': '30px',
+                        'table-header': '37px',
+                        'table-row': '47px',
+                        'dialog-header': '56px',
+                        'dialog-footer': '56px',
+                        'sidebar-item': '56px'
+                    },
+                    spacing: {
+                        'card': '16px',
+                        'content': '24px',
+                        'page': '16px',
+                        'btn-gap-filled': '12px',
+                        'btn-gap-text': '16px',
+                        'btn-gap-mixed': '24px',
+                        'filter-gap': '24px',
+                        'label-input': '8px',
+                        'icon-text': '16px'
+                    },
+                    borderRadius: {
+                        'card': '12px',
+                        'dialog': '8px'
+                    },
+                    boxShadow: {
+                        'card': '0 10px 20px rgba(0,0,0,0.05)',
+                        'nav': '0 1px 0 rgba(0,0,0,0.06)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            /* 众诚 UI 规范 - 组件样式 */
+
+            /* 按钮样式 */
+            .btn-primary {
+                @apply bg-brand hover:bg-brand-hover text-white px-4 py-2 h-6 min-w-[80px] rounded transition-colors;
+            }
+            .btn-secondary {
+                @apply bg-transparent text-brand border border-brand px-4 py-2 h-6 min-w-[80px] rounded transition-colors;
+            }
+            .btn-text {
+                @apply bg-transparent text-brand px-2 py-1 h-6 rounded transition-colors;
+            }
+            .btn-danger {
+                @apply bg-error hover:bg-error-text text-white px-4 py-2 h-6 min-w-[80px] rounded transition-colors;
+            }
+            .btn-disabled {
+                @apply bg-gray-400 text-gray-500 px-4 py-2 h-6 min-w-[80px] rounded cursor-not-allowed;
+            }
+
+            /* 输入框样式 */
+            .input-base {
+                @apply w-full border border-gray-400 px-3 h-8 rounded placeholder-gray-400
+                       focus:border-brand focus:outline-none transition-colors;
+            }
+            .input-error {
+                @apply border-error focus:border-error;
+            }
+
+            /* 表格样式 */
+            .table-zc {
+                @apply min-w-full bg-white;
+            }
+            .table-zc thead {
+                @apply bg-gray-100;
+            }
+            .table-zc th {
+                @apply text-gray-600 font-medium h-table-header px-4 border-b border-gray-300;
+            }
+            .table-zc td {
+                @apply h-table-row px-4 border-b border-gray-300 text-gray-900;
+            }
+            .table-zc tbody tr:hover {
+                @apply bg-gray-200;
+            }
+
+            /* 卡片样式 */
+            .card-zc {
+                @apply bg-white rounded-card shadow-card p-6;
+            }
+
+            /* 标签样式 */
+            .tag-high {
+                @apply bg-brand text-white px-2 py-0.5 rounded text-xs;
+            }
+            .tag-success {
+                @apply bg-success-bg text-success-text px-2 py-0.5 rounded text-xs;
+            }
+            .tag-warning {
+                @apply bg-warning-bg text-warning-text px-2 py-0.5 rounded text-xs;
+            }
+            .tag-error {
+                @apply bg-error-bg text-error-text px-2 py-0.5 rounded text-xs;
+            }
+            .tag-low {
+                @apply bg-gray-200 text-gray-900 px-2 py-0.5 rounded text-xs;
+            }
+
+            /* 页面布局 */
+            .page-container {
+                @apply min-h-screen bg-gray-50;
+            }
+            .page-content {
+                @apply max-w-7xl mx-auto px-page py-6;
+            }
+
+            /* 顶部导航 */
+            .top-nav {
+                @apply h-top-nav bg-white shadow-nav px-6 flex items-center justify-between;
+            }
+
+            /* 页签样式 */
+            .page-tab {
+                @apply h-page-tab px-4 flex items-center gap-tab;
+            }
+            .page-tab-item {
+                @apply h-7 px-3 flex items-center rounded transition-colors;
+            }
+            .page-tab-item-active {
+                @apply text-brand bg-brand-light border-b-2 border-brand;
+            }
+            .page-tab-item-inactive {
+                @apply text-gray-600 hover:text-brand;
+            }
+
+            /* 消息提示 */
+            .message-zc {
+                @apply fixed top-9 left-1/2 -translate-x-1/2 min-w-[240px] max-w-[600px]
+                       bg-white rounded shadow-lg px-4 py-3 flex items-center gap-3 z-50;
+            }
+
+            /* 空状态 */
+            .empty-state {
+                @apply flex flex-col items-center justify-center py-12;
+            }
+            .empty-state-icon {
+                @apply w-[120px] h-[102px] mb-4;
+            }
+            .empty-state-title {
+                @apply text-h3 font-medium text-gray-900 mb-2;
+            }
+            .empty-state-desc {
+                @apply text-body text-gray-600 mb-4;
+            }
+        }
+    </style>
+</head>
+<body class="page-container">
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="flex items-center gap-4">
+            <a href="index.html" class="text-h3 font-semibold text-gray-900">{{PROJECT_NAME}}</a>
+        </div>
+        <div class="flex items-center gap-6">
+            <!-- 导航链接 -->
+            <a href="dashboard.html" class="text-brand font-medium">仪表盘</a>
+            <!-- NAV_ITEMS -->
+            <div class="flex items-center gap-4">
+                <button class="text-gray-600 hover:text-brand">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand font-medium">
+                    A
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="page-content">
+        <!-- PAGE_CONTENT -->
+    </main>
+
+    <!-- 脚本区域 -->
+    <script>
+        // 众诚 UI 规范 - 通用交互
+
+        // 消息提示函数
+        function showMessage(type, message) {
+            const types = {
+                success: { icon: '✓', bg: 'bg-success-bg', text: 'text-success-text', border: 'border-success' },
+                error: { icon: '✕', bg: 'bg-error-bg', text: 'text-error-text', border: 'border-error' },
+                warning: { icon: '⚠', bg: 'bg-warning-bg', text: 'text-warning-text', border: 'border-warning' },
+                info: { icon: 'ℹ', bg: 'bg-info-bg', text: 'text-info-text', border: 'border-info' }
+            };
+            const config = types[type] || types.info;
+
+            const messageEl = document.createElement('div');
+            messageEl.className = `message-zc ${config.bg} ${config.text} border-l-4 ${config.border}`;
+            messageEl.innerHTML = `<span class="text-lg">${config.icon}</span><span>${message}</span>`;
+            document.body.appendChild(messageEl);
+
+            setTimeout(() => messageEl.remove(), 3000);
+        }
+
+        // 确认对话框
+        function showConfirm(title, message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-card shadow-card w-full max-w-md">
+                    <div class="h-dialog-header flex items-center justify-between px-6 border-b border-gray-300">
+                        <h3 class="text-h3 font-medium text-gray-900">${title}</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">✕</button>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-body text-gray-700 mb-6">${message}</p>
+                        <div class="flex justify-end gap-btn-gap-filled">
+                            <button onclick="this.closest('.fixed').remove()" class="btn-secondary">取消</button>
+                            <button class="btn-primary" onclick="this.closest('.fixed').remove(); ${onConfirm}()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+    </script>
+</body>
+</html>
