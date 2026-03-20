@@ -31,10 +31,12 @@
 - 完整的 CHANGELOG 记录
 - 变更前后对比，便于回溯
 
-### 🎨 PRD 转原型网页
-- 自动解析 PRD 文档内容
-- 调用 frontend-design skill 生成可交互原型
-- 支持本地预览和移动端访问
+### 🎨 PRD 转交互原型
+- 从 PRD 文档生成交互式多页面原型
+- 支持多种技术栈（HTML+Tailwind、React+shadcn/ui、Vue+Element Plus、原生HTML）
+- 可选 UI 规范支持（众诚 UI 规范）
+- 自动生成页面跳转和导航
+- 智能链接检查与修复
 
 ## 🚀 快速开始
 
@@ -42,7 +44,6 @@
 
 - Claude Code 已安装
 - （可选）XMind MCP 服务 - 用于 XMind 文件导入功能
-- （可选）frontend-design skill - 用于 PRD 转原型功能
 
 ### 安装
 
@@ -55,7 +56,7 @@ npx skills add https://github.com/guoxiangjie/skills
 安装后会自动创建以下技能：
 - `prd-init` - PRD 文档包初始化
 - `prd-suite` - PRD 文档管理
-- `prd-to-prototype` - PRD 转原型网页
+- `prd-prototype` - PRD 转交互原型
 
 ### 使用方式
 
@@ -109,28 +110,58 @@ project/
 /prd-suite delete module
 ```
 
-#### 6. 生成可交互原型
+#### 6. 生成交互原型
 
 ```
-/prd-to-prototype generate
+/prd-prototype generate
 ```
 
-根据 PRD 文档生成可交互原型网页：
-- 自动扫描项目中的 PRD 文件
-- 解析 PRD 内容提取界面设计信息
-- 调用 frontend-design skill 生成原型
-- 输出到 `prototype/` 目录
+从 PRD 文档生成交互式多页面原型：
+
+**技术栈选择**：
+| 选项 | 技术栈 | 特点 |
+|------|--------|------|
+| 1 | HTML + Tailwind CSS | 快速、轻量、无需构建 |
+| 2 | React + shadcn/ui | 现代化、组件丰富 |
+| 3 | Vue + Element Plus | 企业级、后台友好 |
+| 4 | 原生 HTML/CSS | 无依赖、兼容性好 |
+
+**UI 规范选项**：
+- 应用众诚 UI 规范（企业中后台设计风格）
+- 不使用（默认样式）
+
+**生成流程**：
+1. 读取并分析 PRD 文档
+2. 提取功能模块和业务流程
+3. 生成页面列表和跳转关系
+4. 选择技术栈和 UI 规范
+5. 逐页生成原型内容
+6. 生成路由和导航
+7. 自动检查和修复链接路径
+
+**输出目录结构**：
+```
+{项目名称}-prototype/
+├── index.html              # 首页/登录页
+├── dashboard.html          # 仪表盘
+├── pages/                  # 功能页面
+├── components/             # 可复用组件（React/Vue）
+├── styles/                 # 样式文件
+├── ui-config/              # UI 配置文件
+├── router.js               # 路由配置
+└── README.md               # 原型说明
+```
 
 #### 7. 预览原型
 
 ```
-/prd-to-prototype preview
+/prd-prototype preview
 ```
 
-启动本地服务器预览原型：
-- 自动打开浏览器
-- 支持移动端访问
-- 支持热重载
+预览和导出生成的原型：
+- 浏览器直接打开
+- Python HTTP Server（推荐，支持跳转）
+- ZIP 打包导出
 
 ## 📁 目录结构
 
@@ -170,15 +201,23 @@ project/
 │       ├── module_qa_template.md     # 问答模式模板
 │       └── error_codes_reference.md  # 错误码参考
 │
-├── prd-to-prototype/
+├── prd-prototype/
 │   ├── SKILL.md              # Skill 入口
 │   ├── commands/
 │   │   ├── generate.md       # 生成原型命令
 │   │   └── preview.md        # 预览原型命令
-│   ├── config/
-│   │   └── config.json       # 配置文件
-│   └── templates/
-│       └── prototype_prompt_template.md  # 原型生成提示词模板
+│   ├── scripts/
+│   │   ├── page_analyzer.js  # 页面分析脚本
+│   │   ├── router_generator.js # 路由生成脚本
+│   │   └── link_checker.js   # 链接检查脚本
+│   ├── templates/
+│   │   ├── html_tailwind.html          # HTML+Tailwind 模板
+│   │   ├── html_tailwind_zhongcheng.html # HTML+Tailwind（众诚UI）
+│   │   ├── react_shadcn.html           # React+shadcn 模板
+│   │   ├── vue_element.html            # Vue+Element 模板
+│   │   └── native_html.html            # 原生 HTML 模板
+│   └── ui-presets/
+│       └── zhongcheng-ui.json          # 众诚 UI 规范配置
 │
 └── README.md
 ```
@@ -187,8 +226,8 @@ project/
 
 - **Claude Code Skills Framework** - AI 技能框架
 - **XMind MCP** - XMind 文件解析服务
-- **frontend-design skill** - 原型生成服务
 - **Markdown** - 文档格式标准
+- **Tailwind CSS / shadcn/ui / Element Plus** - 原型 UI 框架
 
 ## 📖 文档规范
 
@@ -265,7 +304,6 @@ project/
 
 - Claude Code 团队提供的 Skills Framework
 - XMind MCP 服务
-- frontend-design skill
 
 ---
 
