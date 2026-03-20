@@ -8,6 +8,7 @@
 1. 从 index.html 跳转到 pages 内的页面，路径错误
 2. 从 pages 内的页面返回根目录页面，路径错误
 3. 导航栏链接在所有页面中相同，但跨目录时失效
+4. **pages/ 内的页面互相跳转时，被错误加上 `pages/` 前缀，变成 `pages/pages/xxx.html`**
 
 ---
 
@@ -89,7 +90,7 @@ node scripts/link_checker.js {prototype-dir}
 
 链接检查：
 ✅ 已检查所有页面的链接跳转
-✅ 已修复 X 处路径错误
+✅ 已修复 X 处路径错误（含 pages/pages/ 重复路径）
 
 下一步：
 使用 /prd-prototype preview 命令在浏览器中打开原型
@@ -101,11 +102,11 @@ node scripts/link_checker.js {prototype-dir}
 
 | 文件 | 修改内容 |
 |------|----------|
-| `commands/generate.md` | 新增步骤 9：检查和修复链接、路径规则说明、常见问题 |
+| `commands/generate.md` | 新增步骤 9：检查和修复链接、路径规则说明、常见问题、pages 内跳转规则 |
 | `SKILL.md` | 添加 `scripts/link_checker.js` 到资源导航、执行流程增加链接检查步骤 |
 | `UI_INTEGRATION.md` | 更新流程图为版本 2、新增链接检查说明 |
-| `scripts/link_checker.js` | **新建** 链接检查脚本 |
-| `LINK_FIX_SUMMARY.md` | **新建** 本总结文档 |
+| `scripts/link_checker.js` | **新建** 链接检查脚本，支持 pages/pages/重复路径修复 |
+| `LINK_FIX_SUMMARY.md` | **新建** 本总结文档，更新 pages 内跳转规则 |
 
 ---
 
@@ -128,6 +129,14 @@ prototype/
 | 根目录 | 子目录 | `pages/` + 文件名 | `href="pages/user-management.html"` |
 | 子目录 | 根目录 | `../` + 文件名 | `href="../dashboard.html"` |
 | 子目录 | 子目录 | 文件名 | `href="order-list.html"` |
+
+### ⚠️ 常见错误
+| 错误场景 | 错误写法 | 正确写法 |
+|---------|---------|---------|
+| pages 内跳转到 pages 内 | `href="pages/user-edit.html"` | `href="user-edit.html"` |
+| pages 内返回根目录 | `href="dashboard.html"` | `href="../dashboard.html"` |
+| 根目录跳转到 pages | `href="user-management.html"` | `href="pages/user-management.html"` |
+| 重复路径 | `href="pages/pages/xxx.html"` | `href="pages/xxx.html"` |
 
 ---
 
@@ -157,20 +166,45 @@ prototype/
 ❌ 错误：<a href="../pages/order-list.html">返回列表</a>
 ```
 
+### 测试场景 4：pages 内跳转（新增/编辑）
+```html
+<!-- 在 pages/user-management.html 中 -->
+<!-- 点击"新增用户"按钮 -->
+✅ 正确：<a href="user-add.html">新增用户</a>
+❌ 错误：<a href="pages/user-add.html">新增用户</a>
+
+<!-- 在 pages/user-management.html 中 -->
+<!-- 点击"编辑"按钮 -->
+✅ 正确：<a href="user-edit.html?id=1">编辑</a>
+❌ 错误：<a href="pages/user-edit.html?id=1">编辑</a>
+```
+
+### 测试场景 5：重复 pages 路径
+```html
+<!-- 在 pages/user-management.html 中 -->
+<!-- 错误的链接被自动修复 -->
+❌ 错误：href="pages/pages/user-edit.html"
+✅ 修复后：href="user-edit.html"
+```
+
 ---
 
 ## 📊 修复效果
 
 ### 修复前
 ```
-index.html → pages/user-management.html  ❌ 404
-pages/user-management.html → dashboard.html  ❌ 404
+index.html → pages/user-management.html         ❌ 404
+pages/user-management.html → dashboard.html     ❌ 404
+pages/user-management.html → pages/user-add.html ❌ 404 (重复 pages/)
+pages/user-edit.html → pages/user-list.html     ❌ 404 (重复 pages/)
 ```
 
 ### 修复后
 ```
-index.html → pages/user-management.html  ✅ 正常
+index.html → pages/user-management.html         ✅ 正常
 pages/user-management.html → ../dashboard.html  ✅ 正常
+pages/user-management.html → user-add.html      ✅ 正常
+pages/user-edit.html → user-list.html           ✅ 正常
 ```
 
 ---

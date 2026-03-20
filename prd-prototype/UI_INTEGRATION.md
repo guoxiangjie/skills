@@ -254,6 +254,13 @@ AI: 正在生成原型...
 | 子目录 (pages/user.html) | 根目录 (dashboard.html) | `../dashboard.html` |
 | 子目录 (pages/user.html) | 子目录 (pages/order.html) | `order-list.html` |
 
+### ⚠️ 常见错误（pages 内跳转）
+| 错误场景 | 错误链接 | 正确链接 |
+|---------|---------|---------|
+| pages 内跳转到 pages 内 | `pages/user-edit.html` | `user-edit.html` |
+| pages 内返回根目录 | `dashboard.html` | `../dashboard.html` |
+| 重复路径 | `pages/pages/xxx.html` | `pages/xxx.html` 或 `xxx.html` |
+
 ### 检查工具
 ```bash
 # 运行链接检查脚本
@@ -263,4 +270,4 @@ node scripts/link_checker.js {prototype-dir}
 ---
 
 *文档创建时间：2026-03-20*
-*最后更新：2026-03-20 (增加链接检查)*
+*最后更新：2026-03-20 (增加链接检查 + pages 内跳转修复)*

@@ -83,6 +83,15 @@ class LinkChecker {
             return targetLink;
         }
 
+        // 【重要】修复 pages/pages/ 重复路径错误
+        if (targetLink.includes('pages/pages/')) {
+            const fixedLink = targetLink.replace('pages/pages/', 'pages/');
+            this.fixedCount++;
+            console.log(`  [重复路径修复] ${targetLink} → ${fixedLink}`);
+            // 递归调用，确保修复后的链接也正确
+            return this.fixLink(currentFile, fixedLink);
+        }
+
         const currentDir = this.getFileDir(currentFile);
         let fixedLink = targetLink;
 
@@ -104,38 +113,45 @@ class LinkChecker {
                 }
             }
         } else {
-            // 从子目录跳转
+            // 从子目录跳转（pages/ 内的页面）
             if (targetDirname === '.' || targetDirname === '') {
-                // 目标是直接文件名
-                if (!targetExists) {
-                    // 尝试从根目录找
-                    if (fs.existsSync(path.join(this.prototypeDir, targetBasename))) {
+                // 目标是直接文件名（如 "user-edit.html"）
+                // 先检查是否是跳转到根目录页面
+                if (fs.existsSync(path.join(this.prototypeDir, targetBasename))) {
+                    // 根目录存在此文件，需要加 ../
+                    if (!targetLink.startsWith('../')) {
                         fixedLink = '../' + targetBasename;
                         this.fixedCount++;
-                    } else if (targetBasename !== targetLink && !targetLink.startsWith('../')) {
-                        // 可能是同级目录跳转，保持原样
-                        // 但需要检查是否存在
-                        const sameDirTarget = path.join(path.dirname(currentFile), targetBasename);
-                        if (!fs.existsSync(sameDirTarget)) {
-                            // 文件不存在，可能需要跳转到根目录
-                            const rootTarget = path.join(this.prototypeDir, targetBasename);
-                            if (fs.existsSync(rootTarget)) {
-                                fixedLink = '../' + targetBasename;
-                                this.fixedCount++;
-                            } else {
-                                this.errorCount++;
-                                console.warn(`⚠️  无法找到目标文件：${targetLink} (当前：${currentFile})`);
-                            }
+                        console.log(`  [根目录跳转] ${targetLink} → ${fixedLink}`);
+                    }
+                } else if (!targetExists) {
+                    // 根目录不存在，检查 pages 目录
+                    const pagesTarget = path.join(this.prototypeDir, 'pages', targetBasename);
+                    if (fs.existsSync(pagesTarget)) {
+                        // 文件在 pages 目录，当前也在 pages 目录，直接用文件名
+                        // 但如果原链接包含 pages/ 前缀，需要移除
+                        if (targetLink.startsWith('pages/')) {
+                            fixedLink = targetBasename;
+                            this.fixedCount++;
+                            console.log(`  [pages 前缀移除] ${targetLink} → ${fixedLink}`);
                         }
+                        // 否则保持原样（同级跳转）
+                    } else {
+                        this.errorCount++;
+                        console.warn(`⚠️  无法找到目标文件：${targetLink} (当前：${currentFile})`);
                     }
-                } else if (!targetLink.startsWith('../') && targetBasename !== targetLink) {
-                    // 带路径但不包含 ../，可能是错误的根目录引用
-                    const rootTarget = path.join(this.prototypeDir, targetBasename);
-                    if (fs.existsSync(rootTarget)) {
-                        fixedLink = '../' + targetBasename;
-                        this.fixedCount++;
-                    }
+                } else if (targetLink.startsWith('pages/')) {
+                    // 链接已经有 pages/ 前缀，但当前也在 pages 目录，需要移除
+                    fixedLink = targetBasename;
+                    this.fixedCount++;
+                    console.log(`  [pages 前缀移除] ${targetLink} → ${fixedLink}`);
                 }
+            } else if (targetDirname === 'pages') {
+                // 链接明确指向 pages/ 目录（如 "pages/user-edit.html"）
+                // 但当前也在 pages 目录，需要移除 pages/ 前缀
+                fixedLink = targetBasename;
+                this.fixedCount++;
+                console.log(`  [pages 前缀移除] ${targetLink} → ${fixedLink}`);
             }
         }
 

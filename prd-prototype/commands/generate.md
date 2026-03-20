@@ -219,7 +219,7 @@
 - 表单提交后跳转
 - 返回列表/详情跳转
 
-**路径规则**：
+**路径规则（重要）**：
 ```
 根目录页面：index.html, dashboard.html
 子目录页面：pages/*.html
@@ -228,8 +228,23 @@
 - 根目录 → 根目录：直接文件名 (e.g., "dashboard.html")
 - 根目录 → 子目录：加路径前缀 (e.g., "pages/user-management.html")
 - 子目录 → 根目录：返回上层 (e.g., "../dashboard.html")
-- 子目录 → 子目录：直接文件名 (e.g., "user-management.html")
+- 子目录 → 子目录：直接文件名 (e.g., "user-edit.html")
+
+⚠️ 常见错误：
+- ❌ pages/user-management.html 中跳转到 pages/user-edit.html 写成 "pages/user-edit.html"
+- ✅ 正确写法：直接写 "user-edit.html"（同级目录不需要路径前缀）
+- ❌ pages/user-management.html 中跳转到 dashboard.html 写成 "dashboard.html"
+- ✅ 正确写法： "../dashboard.html"（需要返回上层）
 ```
+
+**生成页面时的链接写法**：
+| 当前页面 | 目标页面 | 链接写法 |
+|---------|---------|---------|
+| index.html | dashboard.html | `href="dashboard.html"` |
+| index.html | pages/user-management.html | `href="pages/user-management.html"` |
+| pages/user-management.html | dashboard.html | `href="../dashboard.html"` |
+| pages/user-management.html | pages/user-edit.html | `href="user-edit.html"` |
+| pages/user-edit.html | pages/user-management.html | `href="user-management.html"` |
 
 ### 步骤 9：检查和修复链接
 
@@ -240,6 +255,7 @@
 2. 按钮跳转链接是否正确
 3. 表单提交后跳转链接是否正确
 4. 返回列表/详情链接是否正确
+5. **pages/ 内的页面跳转是否错误地加上了 `pages/` 前缀**
 
 **修复规则**：
 | 当前页面位置 | 目标页面 | 正确链接 |
@@ -249,11 +265,18 @@
 | pages/*.html | 根目录页面 | `../dashboard.html` |
 | pages/*.html | pages/*.html | `xxx.html` (同级) |
 
+**常见错误及修复**：
+| 错误场景 | 错误链接 | 修复后 |
+|---------|---------|--------|
+| pages 内跳转到 pages 内 | `href="pages/user-edit.html"` | `href="user-edit.html"` |
+| pages 内返回根目录 | `href="dashboard.html"` | `href="../dashboard.html"` |
+| 重复路径 | `href="pages/pages/xxx.html"` | `href="pages/xxx.html"` |
+
 **检查方法**：
 1. 遍历生成的所有 HTML 文件
 2. 提取所有 `href` 和 `onclick`跳转链接
 3. 验证目标文件是否存在
-4. 修复路径错误的链接
+4. 修复路径错误的链接（可使用 `scripts/link_checker.js` 自动修复）
 
 ### 步骤 10：检查界面完整性
 
