@@ -26,7 +26,8 @@
     "naturalLanguageTemplate": true,
     "smartInference": true,
     "quickMode": true,
-    "versionManagement": true
+    "versionManagement": true,
+    "xmindModuleLevelSelection": true
   },
   "language": {
     "thought": "中文",
