@@ -51,7 +51,7 @@
                             show-trigger
                         >
                             <!-- Logo - 点击返回仪表盘 -->
-                            <a href="../dashboard.html" class="logo-link">
+                            <a href="dashboard.html" class="logo-link">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
                                 <span v-if="!collapsed">{{PROJECT_NAME}}</span>
                             </a>
@@ -68,7 +68,7 @@
                             <n-layout-header bordered class="px-6 py-4">
                                 <n-space justify="space-between" align="center">
                                     <n-breadcrumb>
-                                        <n-breadcrumb-item href="../dashboard.html">
+                                        <n-breadcrumb-item href="dashboard.html">
                                             <span class="menu-item">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                                 首页
@@ -160,7 +160,7 @@
                 const menuOptions = ref([
                     {
                         label: '仪表盘',
-                        key: '../dashboard.html',
+                        key: 'dashboard.html',
                         icon: renderIcon('layoutDashboard')
                     },
                     // NAV_ITEMS
@@ -178,7 +178,7 @@
 
                 const handleUserSelect = (key) => {
                     if (key === 'logout') {
-                        window.location.href = '../index.html';
+                        window.location.href = 'index.html';
                     }
                 };
 

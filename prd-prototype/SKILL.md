@@ -55,11 +55,12 @@ prd/                → prd/prototype/
 prd/prototype/                  # 原型目录（固定路径）
 ├── index.html              # 首页/登录页
 ├── dashboard.html          # 仪表盘
-└── pages/                  # 功能模块页面（每个模块一个页面）
-    ├── user-management.html    # 用户管理（含 CRUD 弹窗）
-    ├── order-management.html   # 订单管理（含详情抽屉）
-    └── settings.html           # 系统设置
+├── user-management.html    # 用户管理（含 CRUD 弹窗）
+├── order-management.html   # 订单管理（含详情抽屉）
+└── settings.html           # 系统设置
 ```
+
+**⚠️ 重要**：所有页面都直接放在 `prd/prototype/` 目录下，不要创建子目录。链接直接写文件名即可。
 
 **每个页面包含**：
 - Logo（点击返回仪表盘）
@@ -164,4 +165,4 @@ prd/prototype/                  # 原型目录（固定路径）
 
 ---
 
-*最后更新：2026-03-24 (一个模块一个页面 + 弹窗优先 + 完整导航结构 + Lucide 图标 + 主题色选择)*
+*最后更新：2026-03-24 (移除 pages 子目录 + 强制询问用户选择 + Lucide 图标 + 主题色选择)*

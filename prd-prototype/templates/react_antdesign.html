@@ -105,7 +105,7 @@
             // 菜单配置
             const menuItems = [
                 {
-                    key: '../dashboard.html',
+                    key: 'dashboard.html',
                     icon: <Icon.LayoutDashboard />,
                     label: '仪表盘',
                 },
@@ -124,7 +124,7 @@
 
             const handleUserMenuClick = (e) => {
                 if (e.key === 'logout') {
-                    window.location.href = '../index.html';
+                    window.location.href = 'index.html';
                 }
             };
 
@@ -139,7 +139,7 @@
                             theme="light"
                         >
                             {/* Logo - 点击返回仪表盘 */}
-                            <a href="../dashboard.html" className="logo-link">
+                            <a href="dashboard.html" className="logo-link">
                                 <Icon.Box />
                                 {!collapsed && <span>{{PROJECT_NAME}}</span>}
                             </a>
@@ -162,7 +162,7 @@
                                 justifyContent: 'space-between'
                             }}>
                                 <Breadcrumb items={[
-                                    { title: <a href="../dashboard.html" style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Icon.Home /> 首页</a> },
+                                    { title: <a href="dashboard.html" style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Icon.Home /> 首页</a> },
                                     { title: '{{PAGE_TITLE}}' }
                                 ]} />
                                 <Space>
