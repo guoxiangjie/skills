@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Ant Design -->
+    <link rel="stylesheet" href="https://unpkg.com/antd@5/dist/reset.css">
+    <script src="https://unpkg.com/dayjs@1/dayjs.min.js"></script>
+    <script src="https://unpkg.com/antd@5/dist/antd.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        body { margin: 0; background: #f0f2f5; }
+        #root { min-height: 100vh; }
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 64px;
+            padding: 0 16px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        .logo-link:hover {
+            background: rgba(0,0,0,0.02);
+        }
+        .menu-item-icon {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const {
+            Layout, Menu, Breadcrumb, Button, Table, Form, Input, Select,
+            Modal, message, Card, Space, Tag, Dropdown, Avatar, Badge,
+            Pagination, Drawer, Popconfirm, Tooltip, Divider, Typography,
+            Row, Col, Statistic, Progress, Tabs, Descriptions, Empty,
+            ConfigProvider
+        } = antd;
+        const { Header, Sider, Content } = Layout;
+
+        // Lucide 图标组件
+        const LucideIcon = ({ name, size = 18 }) => {
+            const iconRef = React.useRef(null);
+
+            React.useEffect(() => {
+                if (iconRef.current && lucide[name]) {
+                    iconRef.current.innerHTML = '';
+                    const svg = lucide.createElement(lucide[name]);
+                    svg.setAttribute('width', size);
+                    svg.setAttribute('height', size);
+                    iconRef.current.appendChild(svg);
+                }
+            }, [name, size]);
+
+            return <span ref={iconRef} style={{ display: 'inline-flex', alignItems: 'center' }} />;
+        };
+
+        // 常用图标
+        const Icon = {
+            Home: () => <LucideIcon name="home" />,
+            Users: () => <LucideIcon name="users" />,
+            LayoutDashboard: () => <LucideIcon name="layout-dashboard" />,
+            Settings: () => <LucideIcon name="settings" />,
+            Bell: () => <LucideIcon name="bell" />,
+            User: () => <LucideIcon name="user" />,
+            ChevronDown: () => <LucideIcon name="chevron-down" size={16} />,
+            Plus: () => <LucideIcon name="plus" />,
+            Edit: () => <LucideIcon name="pencil" />,
+            Trash: () => <LucideIcon name="trash-2" />,
+            Search: () => <LucideIcon name="search" />,
+            Eye: () => <LucideIcon name="eye" />,
+            Download: () => <LucideIcon name="download" />,
+            Box: () => <LucideIcon name="box" size={24} />
+        };
+
+        function App() {
+            const [collapsed, setCollapsed] = useState(false);
+            const [currentMenu, setCurrentMenu] = useState(window.location.pathname.split('/').pop() || 'dashboard.html');
+
+            // 主题色配置 - 生成时替换
+            const themeConfig = {
+                token: {
+                    colorPrimary: '{{PRIMARY_COLOR}}',
+                    colorSuccess: '{{SUCCESS_COLOR}}',
+                    colorWarning: '{{WARNING_COLOR}}',
+                    colorError: '{{ERROR_COLOR}}'
+                }
+            };
+
+            // 菜单配置
+            const menuItems = [
+                {
+                    key: '../dashboard.html',
+                    icon: <Icon.LayoutDashboard />,
+                    label: '仪表盘',
+                },
+                // NAV_ITEMS
+            ];
+
+            // 用户菜单
+            const userMenuItems = [
+                { key: 'profile', label: '个人设置' },
+                { key: 'logout', label: '退出登录' },
+            ];
+
+            const handleMenuClick = (e) => {
+                window.location.href = e.key;
+            };
+
+            const handleUserMenuClick = (e) => {
+                if (e.key === 'logout') {
+                    window.location.href = '../index.html';
+                }
+            };
+
+            return (
+                <ConfigProvider theme={themeConfig}>
+                    <Layout style={{ minHeight: '100vh' }}>
+                        {/* 侧边栏 */}
+                        <Sider
+                            collapsible
+                            collapsed={collapsed}
+                            onCollapse={setCollapsed}
+                            theme="light"
+                        >
+                            {/* Logo - 点击返回仪表盘 */}
+                            <a href="../dashboard.html" className="logo-link">
+                                <Icon.Box />
+                                {!collapsed && <span>{{PROJECT_NAME}}</span>}
+                            </a>
+                            <Menu
+                                mode="inline"
+                                selectedKeys={[currentMenu]}
+                                items={menuItems}
+                                onClick={handleMenuClick}
+                            />
+                        </Sider>
+
+                        {/* 主内容区 */}
+                        <Layout>
+                            {/* 顶部导航 */}
+                            <Header style={{
+                                background: '#fff',
+                                padding: '0 24px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between'
+                            }}>
+                                <Breadcrumb items={[
+                                    { title: <a href="../dashboard.html" style={{ display: 'flex', alignItems: 'center', gap: 4 }}><Icon.Home /> 首页</a> },
+                                    { title: '{{PAGE_TITLE}}' }
+                                ]} />
+                                <Space>
+                                    <Badge count={3} size="small">
+                                        <Button type="text" icon={<Icon.Bell />} />
+                                    </Badge>
+                                    <Dropdown menu={{ items: userMenuItems, onClick: handleUserMenuClick }}>
+                                        <Space style={{ cursor: 'pointer' }}>
+                                            <Avatar icon={<Icon.User />} style={{ backgroundColor: '{{PRIMARY_COLOR}}' }} />
+                                            <span>管理员</span>
+                                            <Icon.ChevronDown />
+                                        </Space>
+                                    </Dropdown>
+                                </Space>
+                            </Header>
+
+                            {/* 内容区 */}
+                            <Content style={{ margin: 24 }}>
+                                {/* PAGE_CONTENT */}
+                            </Content>
+                        </Layout>
+                    </Layout>
+                </ConfigProvider>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>

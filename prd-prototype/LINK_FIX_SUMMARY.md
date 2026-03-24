@@ -50,7 +50,7 @@
 
 使用方法：
 ```bash
-node scripts/link_checker.js {prototype-dir}
+node scripts/link_checker.js prd/prototype
 ```
 
 ### 3. 明确路径规则
@@ -60,14 +60,17 @@ node scripts/link_checker.js {prototype-dir}
 ```markdown
 **路径规则**：
 ```
-根目录页面：index.html, dashboard.html
-子目录页面：pages/*.html
+原型目录结构：
+prd/prototype/
+├── index.html          # 根目录页面
+├── dashboard.html      # 根目录页面
+└── pages/              # 子目录页面
 
 链接规则：
 - 根目录 → 根目录：直接文件名 (e.g., "dashboard.html")
 - 根目录 → 子目录：加路径前缀 (e.g., "pages/user-management.html")
 - 子目录 → 根目录：返回上层 (e.g., "../dashboard.html")
-- 子目录 → 子目录：直接文件名 (e.g., "user-management.html")
+- 子目录 → 子目录：直接文件名 (e.g., "user-edit.html")
 ```
 ```
 
@@ -76,9 +79,10 @@ node scripts/link_checker.js {prototype-dir}
 在确认完成时，增加链接检查报告：
 
 ```
-✅ 原型已成功生成在：{项目名称}-prototype/
+✅ 原型已成功生成在：prd/prototype/
 
 目录结构：
+prd/prototype/
 ├── index.html          # 登录页
 ├── dashboard.html      # 仪表盘
 ├── pages/              # 功能页面
@@ -114,7 +118,7 @@ node scripts/link_checker.js {prototype-dir}
 
 ### 目录结构
 ```
-prototype/
+prd/prototype/              # 原型目录（固定路径）
 ├── index.html              # 根目录
 ├── dashboard.html          # 根目录
 └── pages/                  # 子目录
@@ -218,3 +222,4 @@ pages/user-edit.html → user-list.html           ✅ 正常
 ---
 
 *文档创建时间：2026-03-20*
+*最后更新：2026-03-24 (固定产物路径为 prd/prototype/，移除 UI 规范选项)*

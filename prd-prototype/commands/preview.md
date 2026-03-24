@@ -9,11 +9,16 @@
 ### 步骤 1：检查原型目录
 
 检查项目目录下是否存在原型目录：
-- 查找 `{项目名称}-prototype/` 目录
-- 或查找最近的 HTML 文件
+- 默认路径：`prd/prototype/`
+- 检查 `index.html` 文件是否存在
 
 **如果没有找到原型**：
 > ⚠️ 未找到原型项目。请先使用 `/prd-prototype generate` 命令生成原型。
+
+**路径确认**：
+```
+📂 原型目录：prd/prototype/
+```
 
 ### 步骤 2：选择预览方式
 
@@ -29,12 +34,12 @@
 
 **浏览器打开**：
 ```bash
-open {prototype-dir}/index.html
+open prd/prototype/index.html
 ```
 
 **Python HTTP Server**（推荐，支持跳转）：
 ```bash
-cd {prototype-dir}
+cd prd/prototype
 python -m http.server 8080
 # 然后打开 http://localhost:8080
 ```
