@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{PAGE_TITLE}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --primary: {{PRIMARY_COLOR}};
+            --primary-foreground: #ffffff;
+            --secondary: #f1f5f9;
+            --secondary-foreground: #0f172a;
+            --destructive: {{ERROR_COLOR}};
+            --destructive-foreground: #ffffff;
+            --muted: #f1f5f9;
+            --muted-foreground: #64748b;
+            --background: #ffffff;
+            --foreground: #0f172a;
+            --border: #e2e8f0;
+            --ring: {{PRIMARY_COLOR}};
+            --radius: 0.5rem;
+            --success: {{SUCCESS_COLOR}};
+            --warning: {{WARNING_COLOR}};
+        }
+        * { border-color: var(--border); }
+        body { margin: 0; background: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+        #root { min-height: 100vh; }
+
+        /* Toast 动画 */
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        .toast-enter { animation: slideIn 0.3s ease-out; }
+        .toast-exit { animation: slideOut 0.3s ease-in forwards; }
+
+        /* Spinner 动画 */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 1s linear infinite; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '{{PRIMARY_COLOR}}',
+                        destructive: '{{ERROR_COLOR}}',
+                        success: '{{SUCCESS_COLOR}}',
+                        warning: '{{WARNING_COLOR}}',
+                        muted: '#f1f5f9',
+                        accent: '#f1f5f9',
+                        border: '#e2e8f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            /* ==================== 基础样式 ==================== */
+            .btn {
+                @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors px-4 py-2 gap-2 disabled:opacity-50 disabled:pointer-events-none;
+            }
+            .btn-primary { @apply bg-primary text-white hover:opacity-90; }
+            .btn-secondary { @apply bg-muted text-gray-700 hover:bg-gray-200; }
+            .btn-outline { @apply border border-gray-300 bg-white hover:bg-gray-50; }
+            .btn-destructive { @apply bg-destructive text-white hover:opacity-90; }
+            .btn-ghost { @apply hover:bg-muted; }
+            .btn-link { @apply text-primary underline-offset-4 hover:underline; }
+
+            .input {
+                @apply flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50;
+            }
+            .textarea {
+                @apply flex min-h-[80px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-none;
+            }
+            .label { @apply text-sm font-medium text-gray-700 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70; }
+
+            /* ==================== 容器组件 ==================== */
+            .card { @apply rounded-lg border bg-white shadow-sm; }
+            .badge { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+            .badge-default { @apply bg-primary text-white; }
+            .badge-secondary { @apply bg-gray-100 text-gray-700; }
+            .badge-success { @apply bg-green-100 text-green-700; }
+            .badge-warning { @apply bg-yellow-100 text-yellow-700; }
+            .badge-destructive { @apply bg-red-100 text-red-700; }
+            .badge-outline { @apply border border-gray-300 text-gray-700; }
+
+            /* ==================== 导航组件 ==================== */
+            .menu-item { @apply flex items-center gap-3 rounded-lg px-3 py-2 text-gray-600 transition-all hover:text-gray-900 hover:bg-gray-100; }
+            .menu-item-active { @apply text-gray-900 bg-gray-100; }
+            .breadcrumb-item { @apply text-gray-500 hover:text-gray-900 transition-colors; }
+            .breadcrumb-separator { @apply text-gray-400 mx-2; }
+
+            /* ==================== 弹出层 ==================== */
+            .dialog-overlay { @apply fixed inset-0 z-50 bg-black/50; }
+            .dialog-content { @apply fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border bg-white p-6 shadow-lg rounded-lg max-h-[85vh] overflow-y-auto; }
+            .sheet-content { @apply fixed inset-y-0 right-0 z-50 h-full w-full border-l bg-white p-6 shadow-lg sm:max-w-md overflow-y-auto; }
+            .drawer-content { @apply fixed inset-y-0 left-0 z-50 h-full w-full border-r bg-white p-6 shadow-lg sm:max-w-md overflow-y-auto; }
+            .popover-content { @apply z-50 w-72 rounded-md border bg-white p-4 shadow-lg outline-none; }
+            .tooltip-content { @apply z-50 overflow-hidden rounded-md bg-gray-900 px-3 py-1.5 text-xs text-white shadow-md; }
+            .dropdown-menu { @apply z-50 min-w-[8rem] overflow-hidden rounded-md border bg-white p-1 shadow-lg; }
+            .dropdown-item { @apply relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-gray-100 focus:bg-gray-100; }
+
+            /* ==================== 表单组件 ==================== */
+            .select-trigger { @apply flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50; }
+            .select-content { @apply relative z-50 max-h-60 min-w-[8rem] overflow-auto rounded-md border bg-white shadow-lg; }
+            .select-item { @apply relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-gray-100 focus:bg-gray-100; }
+            .checkbox { @apply h-4 w-4 rounded border border-gray-300 text-primary focus:ring-2 focus:ring-primary; }
+            .radio { @apply h-4 w-4 border-gray-300 text-primary focus:ring-primary; }
+            .switch { @apply relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2; }
+            .switch-checked { @apply bg-primary; }
+            .switch-unchecked { @apply bg-gray-200; }
+            .switch-thumb { @apply pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out; }
+            .slider { @apply w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer; }
+
+            /* ==================== 数据展示 ==================== */
+            .table { @apply min-w-full divide-y divide-gray-200; }
+            .table-header { @apply bg-gray-50; }
+            .table-header-cell { @apply px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider; }
+            .table-body { @apply bg-white divide-y divide-gray-200; }
+            .table-cell { @apply px-4 py-3 whitespace-nowrap text-sm text-gray-900; }
+            .progress { @apply relative h-2 w-full overflow-hidden rounded-full bg-gray-200; }
+            .progress-bar { @apply h-full bg-primary transition-all duration-300 ease-in-out; }
+            .avatar { @apply relative flex shrink-0 overflow-hidden rounded-full; }
+            .avatar-fallback { @apply flex h-full w-full items-center justify-center rounded-full bg-primary text-white font-medium; }
+            .skeleton { @apply animate-pulse rounded-md bg-gray-200; }
+            .spinner { @apply h-5 w-5 animate-spin text-primary; }
+            .empty { @apply flex flex-col items-center justify-center py-12 text-center; }
+
+            /* ==================== 导航组件 ==================== */
+            .tabs-list { @apply inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 text-gray-500; }
+            .tabs-trigger { @apply inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2; }
+            .tabs-trigger-active { @apply bg-white text-gray-900 shadow-sm; }
+            .accordion-item { @apply border-b; }
+            .accordion-trigger { @apply flex w-full items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180; }
+            .accordion-content { @apply overflow-hidden text-sm transition-all; }
+
+            /* ==================== 反馈组件 ==================== */
+            .alert { @apply relative w-full rounded-lg border p-4; }
+            .alert-default { @apply bg-white border-gray-200; }
+            .alert-destructive { @apply bg-red-50 border-red-200 text-red-900; }
+            .alert-success { @apply bg-green-50 border-green-200 text-green-900; }
+            .alert-warning { @apply bg-yellow-50 border-yellow-200 text-yellow-900; }
+            .toast { @apply rounded-lg border bg-white p-4 shadow-lg; }
+
+            /* ==================== 其他 ==================== */
+            .kbd { @apply inline-flex items-center justify-center rounded border bg-gray-100 px-1.5 py-0.5 text-xs font-medium; }
+            .separator { @apply shrink-0 bg-gray-200 h-[1px] w-full; }
+            .scroll-area { @apply relative overflow-auto; }
+            .pagination { @apply flex items-center gap-1; }
+            .pagination-item { @apply inline-flex items-center justify-center h-9 w-9 rounded-md text-sm font-medium transition-colors hover:bg-gray-100; }
+            .pagination-active { @apply bg-primary text-white hover:bg-primary; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, createContext, useContext } = React;
+
+        // ==================== 图标组件 ====================
+        const LucideIcon = ({ name, size = 18, className = "" }) => {
+            const iconRef = useRef(null);
+            useEffect(() => {
+                if (iconRef.current && lucide && lucide[name]) {
+                    iconRef.current.innerHTML = "";
+                    const svg = lucide.createElement(lucide[name]);
+                    svg.setAttribute("width", size);
+                    svg.setAttribute("height", size);
+                    iconRef.current.appendChild(svg);
+                }
+            }, [name, size]);
+            return <span ref={iconRef} className={`inline-flex items-center justify-center ${className}`} />;
+        };
+
+        const Icon = {
+            Home: (p) => <LucideIcon name="home" {...p} />,
+            Dashboard: (p) => <LucideIcon name="layout-dashboard" {...p} />,
+            Users: (p) => <LucideIcon name="users" {...p} />,
+            Settings: (p) => <LucideIcon name="settings" {...p} />,
+            Bell: (p) => <LucideIcon name="bell" {...p} />,
+            User: (p) => <LucideIcon name="user" {...p} />,
+            ChevronDown: (p) => <LucideIcon name="chevron-down" size={16} {...p} />,
+            ChevronUp: (p) => <LucideIcon name="chevron-up" size={16} {...p} />,
+            ChevronRight: (p) => <LucideIcon name="chevron-right" size={16} {...p} />,
+            ChevronLeft: (p) => <LucideIcon name="chevron-left" size={16} {...p} />,
+            Check: (p) => <LucideIcon name="check" size={16} {...p} />,
+            X: (p) => <LucideIcon name="x" {...p} />,
+            Plus: (p) => <LucideIcon name="plus" {...p} />,
+            Minus: (p) => <LucideIcon name="minus" {...p} />,
+            Pencil: (p) => <LucideIcon name="pencil" {...p} />,
+            Trash: (p) => <LucideIcon name="trash-2" {...p} />,
+            Search: (p) => <LucideIcon name="search" {...p} />,
+            Eye: (p) => <LucideIcon name="eye" {...p} />,
+            Menu: (p) => <LucideIcon name="menu" {...p} />,
+            Box: (p) => <LucideIcon name="box" size={24} {...p} />,
+            Calendar: (p) => <LucideIcon name="calendar" {...p} />,
+            Clock: (p) => <LucideIcon name="clock" {...p} />,
+            Filter: (p) => <LucideIcon name="filter" {...p} />,
+            Download: (p) => <LucideIcon name="download" {...p} />,
+            Upload: (p) => <LucideIcon name="upload" {...p} />,
+            MoreHorizontal: (p) => <LucideIcon name="more-horizontal" {...p} />,
+            AlertCircle: (p) => <LucideIcon name="alert-circle" {...p} />,
+            AlertTriangle: (p) => <LucideIcon name="alert-triangle" {...p} />,
+            Info: (p) => <LucideIcon name="info" {...p} />,
+            CheckCircle: (p) => <LucideIcon name="check-circle" {...p} />,
+            XCircle: (p) => <LucideIcon name="x-circle" {...p} />,
+            Empty: (p) => <LucideIcon name="inbox" size={48} {...p} />,
+            Loader: (p) => <LucideIcon name="loader-2" {...p} />,
+            Copy: (p) => <LucideIcon name="copy" {...p} />,
+            ExternalLink: (p) => <LucideIcon name="external-link" {...p} />,
+            RefreshCw: (p) => <LucideIcon name="refresh-cw" {...p} />,
+            LogOut: (p) => <LucideIcon name="log-out" {...p} />,
+            Moon: (p) => <LucideIcon name="moon" {...p} />,
+            Sun: (p) => <LucideIcon name="sun" {...p} />,
+            Star: (p) => <LucideIcon name="star" {...p} />,
+            Heart: (p) => <LucideIcon name="heart" {...p} />,
+            Edit: (p) => <LucideIcon name="edit" {...p} />,
+            Save: (p) => <LucideIcon name="save" {...p} />,
+            File: (p) => <LucideIcon name="file" {...p} />,
+            Folder: (p) => <LucideIcon name="folder" {...p} />,
+            Image: (p) => <LucideIcon name="image" {...p} />,
+            Mail: (p) => <LucideIcon name="mail" {...p} />,
+            Phone: (p) => <LucideIcon name="phone" {...p} />,
+            Lock: (p) => <LucideIcon name="lock" {...p} />,
+            Unlock: (p) => <LucideIcon name="unlock" {...p} />,
+            Printer: (p) => <LucideIcon name="printer" {...p} />,
+        };
+
+        // ==================== 基础组件 ====================
+
+        // Button 按钮
+        const Button = ({ variant = "primary", size = "default", className = "", children, loading, ...props }) => {
+            const variants = { primary: "btn-primary", secondary: "btn-secondary", outline: "btn-outline", destructive: "btn-destructive", ghost: "btn-ghost", link: "btn-link" };
+            const sizes = { default: "h-10 px-4 py-2", sm: "h-8 px-3 text-xs", lg: "h-12 px-6", icon: "h-10 w-10 p-0" };
+            return (
+                <button className={`btn ${variants[variant]} ${sizes[size]} ${className}`} disabled={loading} {...props}>
+                    {loading && <Icon.Loader className="spinner" size={16} />}
+                    {children}
+                </button>
+            );
+        };
+
+        // Input 输入框
+        const Input = ({ className = "", icon, ...props }) => (
+            <div className="relative w-full">
+                {icon && <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</span>}
+                <input className={`input ${icon ? "pl-10" : ""} ${className}`} {...props} />
+            </div>
+        );
+
+        // Textarea 文本域
+        const Textarea = ({ className = "", ...props }) => <textarea className={`textarea ${className}`} {...props} />;
+
+        // Label 标签
+        const Label = ({ className = "", children, required, ...props }) => (
+            <label className={`label ${className}`} {...props}>
+                {children}
+                {required && <span className="text-red-500 ml-1">*</span>}
+            </label>
+        );
+
+        // Card 卡片
+        const Card = ({ className = "", children }) => <div className={`card ${className}`}>{children}</div>;
+        const CardHeader = ({ className = "", children }) => <div className={`flex flex-col space-y-1.5 p-6 ${className}`}>{children}</div>;
+        const CardTitle = ({ className = "", children }) => <h3 className={`text-lg font-semibold leading-none tracking-tight ${className}`}>{children}</h3>;
+        const CardDescription = ({ className = "", children }) => <p className={`text-sm text-gray-500 ${className}`}>{children}</p>;
+        const CardContent = ({ className = "", children }) => <div className={`p-6 pt-0 ${className}`}>{children}</div>;
+        const CardFooter = ({ className = "", children }) => <div className={`flex items-center p-6 pt-0 ${className}`}>{children}</div>;
+
+        // Badge 徽章
+        const Badge = ({ variant = "default", className = "", children }) => {
+            const variants = { default: "badge-default", secondary: "badge-secondary", success: "badge-success", warning: "badge-warning", destructive: "badge-destructive", outline: "badge-outline" };
+            return <span className={`badge ${variants[variant]} ${className}`}>{children}</span>;
+        };
+
+        // Avatar 头像
+        const Avatar = ({ size = "default", className = "", children, ...props }) => {
+            const sizes = { sm: "h-8 w-8 text-xs", default: "h-10 w-10 text-sm", lg: "h-12 w-12 text-base" };
+            return <div className={`avatar ${sizes[size]} ${className}`} {...props}>{children}</div>;
+        };
+        const AvatarFallback = ({ className = "", children }) => <div className={`avatar-fallback ${className}`}>{children}</div>;
+        const AvatarImage = ({ src, alt }) => <img src={src} alt={alt} className="avatar-image object-cover" />;
+
+        // Separator 分隔线
+        const Separator = ({ className = "", orientation = "horizontal" }) => (
+            <div className={`separator ${orientation === "vertical" ? "h-full w-[1px]" : ""} ${className}`} />
+        );
+
+        // Skeleton 骨架屏
+        const Skeleton = ({ className = "" }) => <div className={`skeleton ${className}`} />;
+
+        // Spinner 加载动画
+        const Spinner = ({ size = "default", className = "" }) => {
+            const sizes = { sm: "h-4 w-4", default: "h-5 w-5", lg: "h-8 w-8" };
+            return <Icon.Loader className={`spinner ${sizes[size]} ${className}`} />;
+        };
+
+        // Empty 空状态
+        const Empty = ({ title = "暂无数据", description = "", action, icon }) => (
+            <div className="empty">
+                {icon || <Icon.Empty className="text-gray-400 mb-2" />}
+                <p className="text-sm font-medium text-gray-900">{title}</p>
+                {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+                {action && <div className="mt-4">{action}</div>}
+            </div>
+        );
+
+        // Kbd 键盘按键
+        const Kbd = ({ children, className = "" }) => <kbd className={`kbd ${className}`}>{children}</kbd>;
+
+        // ==================== 表单组件 ====================
+
+        // Select 下拉选择
+        const Select = ({ value, onChange, placeholder = "请选择", options = [], disabled, className = "" }) => {
+            const [open, setOpen] = useState(false);
+            const ref = useRef(null);
+
+            useEffect(() => {
+                const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => document.removeEventListener("mousedown", handleClickOutside);
+            }, []);
+
+            const selectedOption = options.find((o) => o.value === value);
+
+            return (
+                <div ref={ref} className={`relative ${className}`}>
+                    <button type="button" className="select-trigger" onClick={() => !disabled && setOpen(!open)} disabled={disabled}>
+                        <span className={selectedOption ? "text-gray-900" : "text-gray-400"}>{selectedOption ? selectedOption.label : placeholder}</span>
+                        <Icon.ChevronDown className={open ? "rotate-180" : ""} />
+                    </button>
+                    {open && (
+                        <div className="absolute top-full left-0 right-0 mt-1 select-content">
+                            {options.map((option) => (
+                                <div key={option.value} className={`select-item ${value === option.value ? "bg-gray-100" : ""}`} onClick={() => { onChange(option.value); setOpen(false); }}>
+                                    {value === option.value && <span className="absolute left-2"><Icon.Check /></span>}
+                                    {option.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // NativeSelect 原生选择框
+        const NativeSelect = ({ value, onChange, options = [], placeholder, className = "" }) => (
+            <select className={`input ${className}`} value={value} onChange={(e) => onChange(e.target.value)}>
+                {placeholder && <option value="">{placeholder}</option>}
+                {options.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+            </select>
+        );
+
+        // Checkbox 复选框
+        const Checkbox = ({ checked, onChange, label, disabled, className = "" }) => (
+            <label className={`flex items-center gap-2 cursor-pointer ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}>
+                <input type="checkbox" checked={checked} onChange={(e) => !disabled && onChange(e.target.checked)} className="checkbox" disabled={disabled} />
+                {label && <span className="text-sm text-gray-700">{label}</span>}
+            </label>
+        );
+
+        // CheckboxGroup 复选框组
+        const CheckboxGroup = ({ options = [], value = [], onChange, className = "" }) => {
+            const handleChange = (optionValue, checked) => {
+                onChange(checked ? [...value, optionValue] : value.filter((v) => v !== optionValue));
+            };
+            return (
+                <div className={`space-y-2 ${className}`}>
+                    {options.map((option) => (
+                        <Checkbox key={option.value} checked={value.includes(option.value)} onChange={(checked) => handleChange(option.value, checked)} label={option.label} disabled={option.disabled} />
+                    ))}
+                </div>
+            );
+        };
+
+        // Radio 单选框
+        const Radio = ({ checked, onChange, label, disabled, className = "" }) => (
+            <label className={`flex items-center gap-2 cursor-pointer ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}>
+                <input type="radio" checked={checked} onChange={() => !disabled && onChange(true)} className="radio" disabled={disabled} />
+                {label && <span className="text-sm text-gray-700">{label}</span>}
+            </label>
+        );
+
+        // RadioGroup 单选框组
+        const RadioGroup = ({ options = [], value, onChange, name, className = "" }) => (
+            <div className={`space-y-2 ${className}`}>
+                {options.map((option) => (
+                    <Radio key={option.value} checked={value === option.value} onChange={() => onChange(option.value)} label={option.label} disabled={option.disabled} />
+                ))}
+            </div>
+        );
+
+        // Switch 开关
+        const Switch = ({ checked, onChange, disabled, className = "" }) => (
+            <button type="button" className={`switch ${checked ? "switch-checked" : "switch-unchecked"} ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`} onClick={() => !disabled && onChange(!checked)} disabled={disabled}>
+                <span className={`switch-thumb ${checked ? "translate-x-5" : "translate-x-0"}`} />
+            </button>
+        );
+
+        // Slider 滑块
+        const Slider = ({ value, onChange, min = 0, max = 100, step = 1, className = "" }) => (
+            <input type="range" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))} className={`slider ${className}`} />
+        );
+
+        // DatePicker 日期选择器
+        const DatePicker = ({ value, onChange, placeholder = "选择日期", className = "" }) => (
+            <input type="date" value={value || ""} onChange={(e) => onChange(e.target.value)} className={`input ${className}`} placeholder={placeholder} />
+        );
+
+        // TimePicker 时间选择器
+        const TimePicker = ({ value, onChange, className = "" }) => (
+            <input type="time" value={value || ""} onChange={(e) => onChange(e.target.value)} className={`input w-32 ${className}`} />
+        );
+
+        // DateTimePicker 日期时间选择器
+        const DateTimePicker = ({ value, onChange, className = "" }) => {
+            const [date, time] = (value || "").split("T");
+            return (
+                <div className={`flex gap-2 ${className}`}>
+                    <input type="date" value={date || ""} onChange={(e) => onChange(`${e.target.value}T${time || "00:00"}`)} className="input flex-1" />
+                    <input type="time" value={time || ""} onChange={(e) => onChange(`${date || new Date().toISOString().split("T")[0]}T${e.target.value}`)} className="input w-32" />
+                </div>
+            );
+        };
+
+        // InputOTP OTP 输入框
+        const InputOTP = ({ length = 6, value, onChange, className = "" }) => {
+            const handleChange = (index, val) => {
+                if (val.length > 1) return;
+                const newValue = value.split("");
+                newValue[index] = val;
+                onChange(newValue.join(""));
+            };
+
+            return (
+                <div className={`flex gap-2 ${className}`}>
+                    {Array.from({ length }).map((_, i) => (
+                        <input key={i} type="text" maxLength={1} value={value[i] || ""} onChange={(e) => handleChange(i, e.target.value)} className="input w-10 h-12 text-center text-lg" />
+                    ))}
+                </div>
+            );
+        };
+
+        // Toggle 切换按钮
+        const Toggle = ({ pressed, onPressedChange, children, className = "" }) => (
+            <button type="button" className={`btn ${pressed ? "btn-primary" : "btn-outline"} ${className}`} onClick={() => onPressedChange(!pressed)}>
+                {children}
+            </button>
+        );
+
+        // ToggleGroup 切换按钮组
+        const ToggleGroup = ({ type = "single", value, onChange, options = [], className = "" }) => (
+            <div className={`flex gap-1 ${className}`}>
+                {options.map((opt) => (
+                    <Toggle key={opt.value} pressed={type === "single" ? value === opt.value : value?.includes(opt.value)} onPressedChange={() => onChange(opt.value)}>
+                        {opt.icon && opt.icon}
+                        {opt.label}
+                    </Toggle>
+                ))}
+            </div>
+        );
+
+        // ==================== 数据展示组件 ====================
+
+        // Table 表格
+        const Table = ({ className = "", children }) => (
+            <div className="relative w-full overflow-auto">
+                <table className={`table ${className}`}>{children}</table>
+            </div>
+        );
+        const TableHeader = ({ children }) => <thead className="table-header">{children}</thead>;
+        const TableBody = ({ children }) => <tbody className="table-body">{children}</tbody>;
+        const TableRow = ({ className = "", children, ...props }) => <tr className={`hover:bg-gray-50 ${className}`} {...props}>{children}</tr>;
+        const TableHead = ({ className = "", children }) => <th className={`table-header-cell ${className}`}>{children}</th>;
+        const TableCell = ({ className = "", children }) => <td className={`table-cell ${className}`}>{children}</td>;
+
+        // Progress 进度条
+        const Progress = ({ value = 0, max = 100, className = "" }) => (
+            <div className={`progress ${className}`}>
+                <div className="progress-bar" style={{ width: `${Math.min(100, Math.max(0, (value / max) * 100))}%` }} />
+            </div>
+        );
+
+        // Pagination 分页
+        const Pagination = ({ current, total, pageSize = 10, onChange, className = "" }) => {
+            const totalPages = Math.ceil(total / pageSize);
+            const pages = [];
+            for (let i = 1; i <= Math.min(totalPages, 5); i++) pages.push(i);
+
+            return (
+                <div className={`pagination ${className}`}>
+                    <button className="pagination-item" onClick={() => onChange(Math.max(1, current - 1))} disabled={current === 1}>
+                        <Icon.ChevronLeft />
+                    </button>
+                    {pages.map((p) => (
+                        <button key={p} className={`pagination-item ${current === p ? "pagination-active" : ""}`} onClick={() => onChange(p)}>{p}</button>
+                    ))}
+                    <button className="pagination-item" onClick={() => onChange(Math.min(totalPages, current + 1))} disabled={current === totalPages}>
+                        <Icon.ChevronRight />
+                    </button>
+                </div>
+            );
+        };
+
+        // Breadcrumb 面包屑
+        const Breadcrumb = ({ items = [], className = "" }) => (
+            <nav className={`flex items-center text-sm ${className}`}>
+                {items.map((item, i) => (
+                    <React.Fragment key={i}>
+                        {i > 0 && <span className="breadcrumb-separator">/</span>}
+                        {item.href ? (
+                            <a href={item.href} className="breadcrumb-item">{item.label}</a>
+                        ) : (
+                            <span className="text-gray-900 font-medium">{item.label}</span>
+                        )}
+                    </React.Fragment>
+                ))}
+            </nav>
+        );
+
+        // ==================== 导航组件 ====================
+
+        // Tabs 标签页
+        const Tabs = ({ value, onChange, children, className = "" }) => <div className={className}>{children}</div>;
+        const TabsList = ({ children, className = "" }) => <div className={`tabs-list ${className}`}>{children}</div>;
+        const TabsTrigger = ({ value, currentValue, onClick, children, className = "" }) => (
+            <button className={`tabs-trigger ${value === currentValue ? "tabs-trigger-active" : ""} ${className}`} onClick={() => onClick(value)}>{children}</button>
+        );
+        const TabsContent = ({ value, currentValue, children, className = "" }) => {
+            if (value !== currentValue) return null;
+            return <div className={`tabs-content mt-2 ${className}`}>{children}</div>;
+        };
+
+        // Accordion 手风琴
+        const Accordion = ({ type = "single", children, className = "" }) => <div className={className}>{children}</div>;
+        const AccordionItem = ({ value, children, className = "" }) => <div className={`accordion-item ${className}`}>{children}</div>;
+        const AccordionTrigger = ({ children, className = "" }) => {
+            const [open, setOpen] = useState(false);
+            return (
+                <button className={`accordion-trigger ${className}`} onClick={() => setOpen(!open)}>
+                    {children}
+                    <Icon.ChevronDown className={open ? "rotate-180 transition-transform" : "transition-transform"} />
+                </button>
+            );
+        };
+        const AccordionContent = ({ children, className = "" }) => <div className={`accordion-content pb-4 pt-0 ${className}`}>{children}</div>;
+
+        // ==================== 反馈组件 ====================
+
+        // Alert 警告提示
+        const Alert = ({ variant = "default", title, children, className = "" }) => {
+            const variants = { default: "alert-default", destructive: "alert-destructive", success: "alert-success", warning: "alert-warning" };
+            const icons = { default: <Icon.Info />, destructive: <Icon.AlertCircle />, success: <Icon.CheckCircle />, warning: <Icon.AlertTriangle /> };
+            return (
+                <div className={`alert ${variants[variant]} ${className}`}>
+                    <div className="flex gap-3">
+                        <span className="flex-shrink-0">{icons[variant]}</span>
+                        <div>
+                            {title && <h5 className="font-medium mb-1">{title}</h5>}
+                            <div className="text-sm">{children}</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Toast 提示
+        const Toast = ({ message, type = "default", onClose }) => {
+            useEffect(() => {
+                const timer = setTimeout(onClose, 3000);
+                return () => clearTimeout(timer);
+            }, [onClose]);
+
+            return (
+                <div className="toast toast-enter">
+                    <div className="flex items-center gap-3">
+                        {type === "success" && <Icon.CheckCircle className="text-green-500" />}
+                        {type === "error" && <Icon.XCircle className="text-red-500" />}
+                        {type === "warning" && <Icon.AlertTriangle className="text-yellow-500" />}
+                        <span>{message}</span>
+                    </div>
+                </div>
+            );
+        };
+
+        // ToastContext
+        const ToastContext = createContext(null);
+        const ToastProvider = ({ children }) => {
+            const [toasts, setToasts] = useState([]);
+
+            const addToast = (message, type = "default") => {
+                const id = Date.now();
+                setToasts((prev) => [...prev, { id, message, type }]);
+            };
+
+            const removeToast = (id) => setToasts((prev) => prev.filter((t) => t.id !== id));
+
+            return (
+                <ToastContext.Provider value={{ addToast }}>
+                    {children}
+                    <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2">
+                        {toasts.map((toast) => <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />)}
+                    </div>
+                </ToastContext.Provider>
+            );
+        };
+        const useToast = () => useContext(ToastContext);
+
+        // ==================== 弹出层组件 ====================
+
+        // Dialog 弹窗
+        const Dialog = ({ open, onOpenChange, children }) => {
+            useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
+            if (!open) return null;
+            return (
+                <div className="dialog-overlay" onClick={() => onOpenChange(false)}>
+                    <div className="dialog-content" onClick={(e) => e.stopPropagation()}>{children}</div>
+                </div>
+            );
+        };
+        const DialogHeader = ({ className = "", children }) => <div className={`flex flex-col space-y-1.5 ${className}`}>{children}</div>;
+        const DialogTitle = ({ className = "", children }) => <h2 className={`text-lg font-semibold ${className}`}>{children}</h2>;
+        const DialogDescription = ({ className = "", children }) => <p className={`text-sm text-gray-500 ${className}`}>{children}</p>;
+        const DialogFooter = ({ className = "", children }) => <div className={`flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4 ${className}`}>{children}</div>;
+
+        // AlertDialog 确认弹窗
+        const AlertDialog = ({ open, onOpenChange, children }) => {
+            useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
+            if (!open) return null;
+            return (
+                <div className="dialog-overlay" onClick={() => onOpenChange(false)}>
+                    <div className="dialog-content max-w-md" onClick={(e) => e.stopPropagation()}>{children}</div>
+                </div>
+            );
+        };
+        const AlertDialogHeader = ({ children }) => <div className="flex flex-col space-y-2 text-center sm:text-left">{children}</div>;
+        const AlertDialogTitle = ({ children }) => <h2 className="text-lg font-semibold">{children}</h2>;
+        const AlertDialogDescription = ({ children }) => <p className="text-sm text-gray-500">{children}</p>;
+        const AlertDialogFooter = ({ children }) => <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4">{children}</div>;
+        const AlertDialogAction = ({ children, onClick, className = "" }) => <Button className={className} onClick={onClick}>{children}</Button>;
+        const AlertDialogCancel = ({ children, onClick, className = "" }) => <Button variant="outline" className={className} onClick={onClick}>{children}</Button>;
+
+        // Sheet 抽屉 (右侧)
+        const Sheet = ({ open, onOpenChange, children }) => {
+            useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
+            if (!open) return null;
+            return (
+                <div className="fixed inset-0 z-50 bg-black/50" onClick={() => onOpenChange(false)}>
+                    <div className="sheet-content" onClick={(e) => e.stopPropagation()}>{children}</div>
+                </div>
+            );
+        };
+        const SheetHeader = ({ className = "", children }) => <div className={`flex flex-col space-y-2 border-b pb-4 mb-4 ${className}`}>{children}</div>;
+        const SheetTitle = ({ className = "", children }) => <h2 className={`text-lg font-semibold ${className}`}>{children}</h2>;
+        const SheetDescription = ({ className = "", children }) => <p className={`text-sm text-gray-500 ${className}`}>{children}</p>;
+        const SheetFooter = ({ className = "", children }) => <div className={`flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 border-t pt-4 mt-4 ${className}`}>{children}</div>;
+        const SheetClose = ({ children, onClick }) => <>{React.cloneElement(children, { onClick })}</>;
+
+        // Drawer 抽屉 (左侧)
+        const Drawer = ({ open, onOpenChange, children }) => {
+            useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; return () => { document.body.style.overflow = ""; }; }, [open]);
+            if (!open) return null;
+            return (
+                <div className="fixed inset-0 z-50 bg-black/50" onClick={() => onOpenChange(false)}>
+                    <div className="drawer-content" onClick={(e) => e.stopPropagation()}>{children}</div>
+                </div>
+            );
+        };
+        const DrawerHeader = ({ children }) => <div className="flex flex-col space-y-2 border-b pb-4 mb-4">{children}</div>;
+        const DrawerTitle = ({ children }) => <h2 className="text-lg font-semibold">{children}</h2>;
+        const DrawerDescription = ({ children }) => <p className="text-sm text-gray-500">{children}</p>;
+        const DrawerFooter = ({ children }) => <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 border-t pt-4 mt-4">{children}</div>;
+
+        // Popover 弹出框
+        const Popover = ({ open, onOpenChange, trigger, children }) => {
+            const ref = useRef(null);
+            useEffect(() => {
+                const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) onOpenChange(false); };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => document.removeEventListener("mousedown", handleClickOutside);
+            }, [onOpenChange]);
+
+            return (
+                <div ref={ref} className="relative inline-block">
+                    <div onClick={() => onOpenChange(!open)}>{trigger}</div>
+                    {open && <div className="absolute top-full left-0 mt-2 popover-content">{children}</div>}
+                </div>
+            );
+        };
+        const PopoverContent = ({ className = "", children }) => <div className={className}>{children}</div>;
+        const PopoverTrigger = ({ children }) => <>{children}</>;
+
+        // Tooltip 提示
+        const Tooltip = ({ content, children, className = "" }) => {
+            const [show, setShow] = useState(false);
+            return (
+                <div className="relative inline-block" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+                    {children}
+                    {show && (
+                        <div className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 tooltip-content ${className}`}>
+                            {content}
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // Dropdown 下拉菜单
+        const Dropdown = ({ trigger, items = [], align = "start", className = "" }) => {
+            const [open, setOpen] = useState(false);
+            const ref = useRef(null);
+
+            useEffect(() => {
+                const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => document.removeEventListener("mousedown", handleClickOutside);
+            }, []);
+
+            return (
+                <div ref={ref} className={`relative inline-block ${className}`}>
+                    <div onClick={() => setOpen(!open)}>{trigger}</div>
+                    {open && (
+                        <div className={`absolute top-full ${align === "end" ? "right-0" : "left-0"} mt-1 dropdown-menu`}>
+                            {items.map((item, idx) => item.separator ? (
+                                <Separator key={idx} className="my-1" />
+                            ) : (
+                                <div key={idx} className="dropdown-item" onClick={() => { item.onClick && item.onClick(); setOpen(false); }}>
+                                    {item.icon && <span className="mr-2">{item.icon}</span>}
+                                    {item.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // Popconfirm 确认气泡
+        const Popconfirm = ({ title, description, onConfirm, onCancel, children }) => {
+            const [open, setOpen] = useState(false);
+            const ref = useRef(null);
+
+            useEffect(() => {
+                const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+                document.addEventListener("mousedown", handleClickOutside);
+                return () => document.removeEventListener("mousedown", handleClickOutside);
+            }, []);
+
+            return (
+                <div ref={ref} className="relative inline-block">
+                    <div onClick={() => setOpen(true)}>{children}</div>
+                    {open && (
+                        <div className="absolute top-full left-0 mt-2 z-50 w-64 rounded-md border bg-white p-4 shadow-lg">
+                            <div className="flex items-start gap-2">
+                                <Icon.AlertTriangle className="text-yellow-500 flex-shrink-0" />
+                                <div>
+                                    <p className="font-medium text-sm">{title}</p>
+                                    {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+                                </div>
+                            </div>
+                            <div className="flex justify-end gap-2 mt-3">
+                                <Button variant="outline" size="sm" onClick={() => { setOpen(false); onCancel && onCancel(); }}>取消</Button>
+                                <Button size="sm" onClick={() => { setOpen(false); onConfirm && onConfirm(); }}>确定</Button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // HoverCard 悬停卡片
+        const HoverCard = ({ trigger, children }) => {
+            const [show, setShow] = useState(false);
+            return (
+                <div className="relative inline-block" onMouseEnter={() => setShow(true)} onMouseLeave={() => setShow(false)}>
+                    {trigger}
+                    {show && <div className="absolute top-full left-0 mt-2 z-50 popover-content">{children}</div>}
+                </div>
+            );
+        };
+
+        // ==================== 主应用 ====================
+        function App() {
+            const [sidebarOpen, setSidebarOpen] = useState(true);
+            const currentPath = window.location.pathname.split("/").pop() || "dashboard.html";
+
+            const menuItems = [
+                { href: "dashboard.html", icon: Icon.Dashboard, label: "仪表盘" },
+                // NAV_ITEMS
+            ];
+
+            return (
+                <ToastProvider>
+                    <div className="flex min-h-screen bg-slate-50">
+                        {/* 侧边栏 */}
+                        <aside className={`${sidebarOpen ? "w-64" : "w-16"} bg-white border-r transition-all duration-300 flex-shrink-0`}>
+                            <a href="dashboard.html" className="flex items-center gap-2 h-16 px-4 border-b hover:bg-slate-50 transition-colors">
+                                <Icon.Box className="text-primary flex-shrink-0" />
+                                {sidebarOpen && <span className="font-semibold text-lg">{{PROJECT_NAME}}</span>}
+                            </a>
+                            <nav className="p-2 space-y-1">
+                                {menuItems.map((item) => (
+                                    <a key={item.href} href={item.href} className={`menu-item ${currentPath === item.href ? "menu-item-active" : ""}`}>
+                                        <item.icon className="flex-shrink-0" size={20} />
+                                        {sidebarOpen && <span>{item.label}</span>}
+                                    </a>
+                                ))}
+                            </nav>
+                        </aside>
+
+                        {/* 主内容区 */}
+                        <main className="flex-1 flex flex-col">
+                            <header className="h-16 bg-white border-b flex items-center justify-between px-6">
+                                <div className="flex items-center gap-4">
+                                    <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                                        <Icon.Menu size={20} />
+                                    </Button>
+                                    <Breadcrumb items={[{ label: "首页", href: "dashboard.html" }, { label: "{{PAGE_TITLE}}" }]} />
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <Button variant="ghost" size="icon" className="relative">
+                                        <Icon.Bell size={18} />
+                                        <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                                    </Button>
+                                    <Dropdown
+                                        trigger={
+                                            <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2 py-1">
+                                                <Avatar size="sm"><AvatarFallback>管</AvatarFallback></Avatar>
+                                                <span className="text-sm font-medium">管理员</span>
+                                                <Icon.ChevronDown />
+                                            </div>
+                                        }
+                                        items={[
+                                            { label: "个人设置", icon: <Icon.Settings size={16} /> },
+                                            { label: "退出登录", icon: <Icon.LogOut size={16} /> },
+                                        ]}
+                                    />
+                                </div>
+                            </header>
+
+                            <div className="flex-1 p-6 overflow-auto">
+                                {/* PAGE_CONTENT */}
+                            </div>
+                        </main>
+                    </div>
+                </ToastProvider>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>

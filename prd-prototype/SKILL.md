@@ -31,11 +31,7 @@ prd/                → prd/prototype/
 | `commands/generate.md` | 原型生成详细流程 | 执行 generate 命令时 |
 | `commands/preview.md` | 原型预览和导出流程 | 执行 preview 命令时 |
 | `templates/html_tailwind.html` | HTML+Tailwind 模板 | 生成 Tailwind 原型时 |
-| `templates/vue_naive.html` | Vue+Naive UI 模板 | 生成 Vue 原型时 |
-| `templates/react_antdesign.html` | React+Ant Design 模板 | 生成 React 原型时 |
-| `scripts/page_analyzer.js` | 页面分析脚本 | 需要从 PRD 提取页面列表时 |
-| `scripts/router_generator.js` | 路由生成脚本 | 需要生成页面跳转逻辑时 |
-| `scripts/link_checker.js` | 链接检查脚本 | 生成完成后检查和修复链接路径 |
+| `templates/react_shadcn.html` | React+shadcn/ui+Tailwind 模板 | 生成 React 原型时 |
 
 ## 🎯 核心功能
 
@@ -47,8 +43,7 @@ prd/                → prd/prototype/
 | 技术栈 | 适用场景 | 输出 |
 |--------|----------|------|
 | **HTML + Tailwind CSS** | 快速原型、轻量演示 | 多个 HTML 文件 + Tailwind CDN |
-| **Vue + Naive UI** | 现代化 Vue 应用、组件丰富 | Vue 组件 + Naive UI |
-| **React + Ant Design** | 企业级应用、组件完善 | React 组件 + Ant Design |
+| **React + shadcn/ui + Tailwind** | 现代化应用、美观实用 | React 组件 + shadcn/ui 风格 |
 
 **生成的目录结构**：
 ```
@@ -165,4 +160,4 @@ prd/prototype/                  # 原型目录（固定路径）
 
 ---
 
-*最后更新：2026-03-24 (移除 pages 子目录 + 强制询问用户选择 + Lucide 图标 + 主题色选择)*
+*最后更新：2026-03-25 (移除 Vue 技术栈 + React 改用 shadcn/ui + 移除 pages 子目录)*

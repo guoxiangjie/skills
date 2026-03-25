@@ -241,17 +241,15 @@ prd/                → prd/prototype/
 请选择原型技术栈：
 
 1. HTML + Tailwind CSS - 快速、轻量、无需构建
-2. Vue + Naive UI - 现代化 Vue 应用、组件丰富
-3. React + Ant Design - 企业级应用、组件完善
+2. React + shadcn/ui + Tailwind - 现代化组件、美观实用
 
-请输入选项数字（1/2/3）：
+请输入选项数字（1/2）：
 ```
 
 | 选项 | 技术栈 | 特点 |
 |------|--------|------|
 | 1 | **HTML + Tailwind CSS** | 快速、轻量、无需构建 |
-| 2 | **Vue + Naive UI** | 现代化 Vue 应用、组件丰富 |
-| 3 | **React + Ant Design** | 企业级应用、组件完善 |
+| 2 | **React + shadcn/ui + Tailwind** | 现代化组件、美观实用、高度可定制 |
 
 ---
 
@@ -419,48 +417,224 @@ function closeAllModals() {
 </script>
 ```
 
-### Vue + Naive UI
+### React + shadcn/ui + Tailwind
 
-```html
-<n-modal v-model:show="showAddModal" preset="card" title="新增用户" style="width: 600px;">
-    <n-form :model="formData">
-        <n-form-item label="用户名" required>
-            <n-input v-model:value="formData.username" placeholder="请输入用户名" />
-        </n-form-item>
-    </n-form>
-    <template #footer>
-        <n-space justify="end">
-            <n-button @click="showAddModal = false">取消</n-button>
-            <n-button type="primary" @click="handleAdd">确定</n-button>
-        </n-space>
-    </template>
-</n-modal>
+shadcn/ui 使用 Radix UI 原语 + Tailwind CSS 样式，组件美观且高度可定制。
 
-<n-drawer v-model:show="showDetailDrawer" :width="500">
-    <n-drawer-content title="用户详情">
-        <n-descriptions :column="1">
-            <n-descriptions-item label="用户名">{{ detailData.username }}</n-descriptions-item>
-        </n-descriptions>
-    </n-drawer-content>
-</n-drawer>
+**基础组件**：
+
+| 功能 | 组件 |
+|------|------|
+| 按钮 | `<Button variant="primary/secondary/outline/destructive/ghost/link" size="sm/default/lg/icon">` |
+| 输入框 | `<Input placeholder="请输入" icon={<Icon.Search />} />` |
+| 文本域 | `<Textarea placeholder="请输入" />` |
+| 标签 | `<Label required>用户名</Label>` |
+| 卡片 | `<Card><CardHeader><CardTitle><CardDescription><CardContent><CardFooter>` |
+| 徽章 | `<Badge variant="default/secondary/success/warning/destructive/outline">正常</Badge>` |
+| 头像 | `<Avatar size="sm/default/lg"><AvatarFallback>管</AvatarFallback></Avatar>` |
+| 分隔线 | `<Separator orientation="horizontal/vertical" />` |
+| 骨架屏 | `<Skeleton className="h-4 w-48" />` |
+| 加载动画 | `<Spinner size="sm/default/lg" />` |
+| 空状态 | `<Empty title="暂无数据" description="点击新增" action={<Button>新增</Button>} />` |
+| 键盘按键 | `<Kbd>Ctrl</Kbd>` |
+
+**表单组件**：
+
+| 功能 | 组件 |
+|------|------|
+| 下拉选择 | `<Select options={[{value, label}]} value={} onChange={} />` |
+| 原生选择 | `<NativeSelect options={[{value, label}]} value={} onChange={} />` |
+| 复选框 | `<Checkbox checked={} onChange={} label="同意" />` |
+| 复选框组 | `<CheckboxGroup options={[]} value={[]} onChange={} />` |
+| 单选框 | `<Radio checked={} onChange={} label="选项" />` |
+| 单选框组 | `<RadioGroup options={[]} value={} onChange={} />` |
+| 开关 | `<Switch checked={} onChange={} />` |
+| 滑块 | `<Slider value={} onChange={} min={0} max={100} />` |
+| 日期选择 | `<DatePicker value={} onChange={} />` |
+| 时间选择 | `<TimePicker value={} onChange={} />` |
+| 日期时间 | `<DateTimePicker value={} onChange={} />` |
+| OTP输入 | `<InputOTP length={6} value={} onChange={} />` |
+| 切换按钮 | `<Toggle pressed={} onPressedChange={}>{children}</Toggle>` |
+| 切换按钮组 | `<ToggleGroup type="single/multiple" options={[]} value={} onChange={} />` |
+
+**数据展示组件**：
+
+| 功能 | 组件 |
+|------|------|
+| 表格 | `<Table><TableHeader><TableBody><TableRow><TableHead><TableCell>` |
+| 进度条 | `<Progress value={50} max={100} />` |
+| 分页 | `<Pagination current={1} total={100} pageSize={10} onChange={} />` |
+| 面包屑 | `<Breadcrumb items={[{label, href}]} />` |
+
+**导航组件**：
+
+| 功能 | 组件 |
+|------|------|
+| 标签页 | `<Tabs value={} onChange={}><TabsList><TabsTrigger>` + `<TabsContent>` |
+| 手风琴 | `<Accordion><AccordionItem><AccordionTrigger><AccordionContent>` |
+
+**反馈组件**：
+
+| 功能 | 组件 |
+|------|------|
+| 弹窗 | `<Dialog open={} onOpenChange={}><DialogHeader><DialogTitle><DialogDescription><DialogFooter>` |
+| 确认弹窗 | `<AlertDialog><AlertDialogHeader><AlertDialogTitle><AlertDialogDescription><AlertDialogFooter><AlertDialogAction><AlertDialogCancel>` |
+| 右侧抽屉 | `<Sheet open={} onOpenChange={}><SheetHeader><SheetTitle><SheetFooter>` |
+| 左侧抽屉 | `<Drawer open={} onOpenChange={}><DrawerHeader><DrawerTitle><DrawerFooter>` |
+| 弹出框 | `<Popover open={} onOpenChange={} trigger={}><PopoverContent>` |
+| 提示 | `<Tooltip content="提示内容"><Button>悬停</Button></Tooltip>` |
+| 下拉菜单 | `<Dropdown trigger={<Button>菜单</Button>} items={[{label, icon, onClick}]} />` |
+| 确认气泡 | `<Popconfirm title="确定删除?" description="不可恢复" onConfirm={}><Button>删除</Button></Popconfirm>` |
+| 悬停卡片 | `<HoverCard trigger={<Avatar />}>{content}</HoverCard>` |
+| 警告提示 | `<Alert variant="default/destructive/success/warning" title="标题">内容</Alert>` |
+| 消息提示 | `<ToastProvider>包裹应用，useToast().addToast("消息", "success")` |
+
+**示例 - 列表页（含弹窗）**：
+```jsx
+<Card>
+    <CardHeader>
+        <CardTitle>用户列表</CardTitle>
+    </CardHeader>
+    <CardContent>
+        <div className="flex justify-between mb-4">
+            <div className="flex gap-2">
+                <Input placeholder="搜索用户名..." className="w-64" icon={<Icon.Search size={16} />} />
+                <Button variant="outline">搜索</Button>
+            </div>
+            <Button onClick={() => setShowAddModal(true)}><Icon.Plus size={16} />新增用户</Button>
+        </div>
+
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>序号</TableHead>
+                    <TableHead>用户名</TableHead>
+                    <TableHead>状态</TableHead>
+                    <TableHead>操作</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableCell>1</TableCell>
+                    <TableCell>张三</TableCell>
+                    <TableCell><Badge variant="success">正常</Badge></TableCell>
+                    <TableCell>
+                        <div className="flex gap-2">
+                            <Button variant="link" size="sm" onClick={() => openEditModal(row)}>编辑</Button>
+                            <Popconfirm title="确定删除?" description="此操作不可恢复" onConfirm={() => handleDelete(row.id)}>
+                                <Button variant="link" size="sm" className="text-red-500">删除</Button>
+                            </Popconfirm>
+                        </div>
+                    </TableCell>
+                </TableRow>
+            </TableBody>
+        </Table>
+
+        <div className="flex justify-end mt-4">
+            <Pagination current={1} total={100} pageSize={10} onChange={handlePageChange} />
+        </div>
+    </CardContent>
+</Card>
+
+{/* 新增弹窗 */}
+<Dialog open={showAddModal} onOpenChange={setShowAddModal}>
+    <DialogHeader>
+        <DialogTitle>新增用户</DialogTitle>
+        <DialogDescription>填写用户信息</DialogDescription>
+    </DialogHeader>
+    <div className="space-y-4 py-4">
+        <div className="space-y-2">
+            <Label required>用户名</Label>
+            <Input placeholder="请输入用户名" />
+        </div>
+        <div className="space-y-2">
+            <Label>角色</Label>
+            <Select options={[{value: "admin", label: "管理员"}, {value: "user", label: "普通用户"}]} value={role} onChange={setRole} />
+        </div>
+        <div className="space-y-2">
+            <Label>状态</Label>
+            <RadioGroup options={[{value: "active", label: "启用"}, {value: "inactive", label: "禁用"}]} value={status} onChange={setStatus} />
+        </div>
+    </div>
+    <DialogFooter>
+        <Button variant="outline" onClick={() => setShowAddModal(false)}>取消</Button>
+        <Button onClick={handleAdd}>确定</Button>
+    </DialogFooter>
+</Dialog>
+
+{/* 详情抽屉 */}
+<Sheet open={showDetailSheet} onOpenChange={setShowDetailSheet}>
+    <SheetHeader>
+        <SheetTitle>用户详情</SheetTitle>
+        <SheetDescription>查看用户完整信息</SheetDescription>
+    </SheetHeader>
+    <div className="space-y-4">
+        <div className="flex justify-between py-2 border-b">
+            <span className="text-gray-500">用户名</span>
+            <span>{detailData.username}</span>
+        </div>
+        <div className="flex justify-between py-2 border-b">
+            <span className="text-gray-500">角色</span>
+            <Badge>{detailData.role}</Badge>
+        </div>
+    </div>
+    <SheetFooter>
+        <Button variant="outline" onClick={() => setShowDetailSheet(false)}>关闭</Button>
+    </SheetFooter>
+</Sheet>
 ```
 
-### React + Ant Design
+**图标组件 (Lucide)**：
+
+模板内置了常用 Lucide 图标组件，使用方式：
 
 ```jsx
-<Modal title="新增用户" open={showAddModal} onCancel={() => setShowAddModal(false)} onOk={handleAdd}>
-    <Form form={form} layout="vertical">
-        <Form.Item name="username" label="用户名" rules={[{ required: true }]}>
-            <Input placeholder="请输入用户名" />
-        </Form.Item>
-    </Form>
-</Modal>
+// 图标用法
+<Icon.Home size={18} />
+<Icon.Users size={20} className="text-gray-500" />
+<Icon.Settings />
 
-<Drawer title="用户详情" open={showDetailDrawer} onClose={() => setShowDetailDrawer(false)} width={500}>
-    <Descriptions column={1}>
-        <Descriptions.Item label="用户名">{detailData.username}</Descriptions.Item>
-    </Descriptions>
-</Drawer>
+// 常用图标列表
+Icon.Home          // 首页
+Icon.Dashboard     // 仪表盘
+Icon.Users         // 用户
+Icon.Settings      // 设置
+Icon.Bell          // 通知
+Icon.User          // 用户头像
+Icon.Plus          // 新增
+Icon.Pencil        // 编辑
+Icon.Trash         // 删除
+Icon.Eye           // 查看
+Icon.Search        // 搜索
+Icon.Menu          // 菜单
+Icon.Box           // Logo
+Icon.Calendar      // 日历
+Icon.Clock         // 时间
+Icon.Download      // 下载
+Icon.Upload        // 上传
+Icon.Check         // 确认
+Icon.X             // 关闭
+Icon.ChevronDown   // 下箭头
+Icon.ChevronRight  // 右箭头
+Icon.AlertCircle   // 警告
+Icon.CheckCircle   // 成功
+Icon.Info          // 信息
+Icon.Loader        // 加载中
+Icon.RefreshCw     // 刷新
+Icon.LogOut        // 退出
+```
+
+**⚠️ 注意：DOM 标签必须正确闭合**
+```jsx
+// ❌ 错误
+<input type="text">
+<br>
+<img src="...">
+
+// ✅ 正确
+<input type="text" />
+<br />
+<img src="..." />
 ```
 
 ---
