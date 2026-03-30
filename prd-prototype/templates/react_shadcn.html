@@ -789,6 +789,27 @@
             );
         };
 
+        // BusinessLogicTip 业务逻辑提示气泡
+        const BusinessLogicTip = ({ content, position = "top" }) => {
+            const [show, setShow] = useState(false);
+            return (
+                <span
+                    className="relative inline-flex items-center ml-1"
+                    onMouseEnter={() => setShow(true)}
+                    onMouseLeave={() => setShow(false)}
+                >
+                    <span className="w-5 h-5 inline-flex items-center justify-center text-sm cursor-help bg-amber-100 text-amber-600 rounded-full">
+                        💡
+                    </span>
+                    {show && (
+                        <span className={`absolute ${position === "top" ? "bottom-full mb-2" : "top-full mt-2"} left-1/2 -translate-x-1/2 w-64 p-3 bg-white rounded-lg shadow-lg border text-sm text-gray-700 z-50 whitespace-pre-line max-h-72 overflow-y-auto`}>
+                            {content}
+                        </span>
+                    )}
+                </span>
+            );
+        };
+
         // ==================== 主应用 ====================
         function App() {
             const [sidebarOpen, setSidebarOpen] = useState(true);
