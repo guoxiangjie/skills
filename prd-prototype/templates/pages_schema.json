@@ -1,0 +1,82 @@
+{
+  "version": "1.0",
+  "created_at": "{{CREATED_AT}}",
+  "prototype_dir": "prd/prototype/",
+  "project_name": "{{PROJECT_NAME}}",
+
+  "pages": [
+    {
+      "file": "index.html",
+      "title": "登录页",
+      "module": "登录",
+      "features": ["用户登录", "记住密码"],
+      "modals": [],
+      "links_to": ["dashboard.html"],
+      "requireNav": false,
+      "status": "pending"
+    },
+    {
+      "file": "dashboard.html",
+      "title": "仪表盘",
+      "module": "仪表盘",
+      "features": ["数据概览", "快捷入口", "统计卡片"],
+      "modals": [],
+      "links_to": ["user-management.html", "order-management.html", "settings.html"],
+      "requireNav": true,
+      "status": "pending"
+    },
+    {
+      "file": "user-management.html",
+      "title": "用户管理",
+      "module": "用户管理",
+      "features": ["用户列表", "新增用户", "编辑用户", "查看详情", "删除用户", "搜索", "筛选"],
+      "modals": ["新增用户弹窗", "编辑用户弹窗", "用户详情弹窗", "删除确认弹窗"],
+      "links_to": ["dashboard.html"],
+      "requireNav": true,
+      "status": "pending"
+    }
+  ],
+
+  "nav_items": [
+    { "label": "仪表盘", "href": "dashboard.html", "icon": "layout-dashboard" },
+    { "label": "用户管理", "href": "user-management.html", "icon": "users" },
+    { "label": "订单管理", "href": "order-management.html", "icon": "shopping-bag" },
+    { "label": "系统设置", "href": "settings.html", "icon": "settings" }
+  ],
+
+  "design_system": {
+    "style": "工业硬朗",
+    "font_heading": "Archivo Black",
+    "font_body": "Work Sans",
+    "colors": {
+      "bg_primary": "#ffffff",
+      "bg_secondary": "#f8f8f8",
+      "bg_card": "#ffffff",
+      "text_primary": "#000000",
+      "text_secondary": "#666666",
+      "accent": "#ff3d00",
+      "accent_hover": "#ff5c1f",
+      "accent_secondary": "#000000",
+      "success": "#40916c",
+      "warning": "#e76f51",
+      "error": "#c1121f",
+      "border": "#000000",
+      "shadow_color": "rgba(0, 0, 0, 0.2)"
+    },
+    "effects": {
+      "hard_shadow": "8px 8px 0 #000",
+      "border_radius": "0",
+      "animation": "fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "tech_stack": "html-tailwind"
+  },
+
+  "validation_rules": {
+    "nav_required": ["Logo", "侧边栏菜单", "顶部导航", "面包屑"],
+    "table_min_rows": 3,
+    "forbidden_elements": ["alert()", "confirm()", "prompt()"],
+    "forbidden_patterns": ["此处显示", "TODO", "待实现"],
+    "forbidden_fonts": ["Inter", "Roboto", "Arial", "Helvetica"],
+    "required_fonts": true
+  }
+}

@@ -7,104 +7,304 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- Google Fonts - 独特字体组合（避免 Inter/Roboto/Arial）-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family={{FONT_HEADING}}:wght@400;600;800;900&family={{FONT_BODY}}:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
-        /* 主题色变量 - 生成时替换 */
+        /* ============================================
+           设计美学变量 - 生成时替换
+           ============================================ */
         :root {
-            --primary-color: {{PRIMARY_COLOR}};
-            --primary-hover: {{PRIMARY_HOVER}};
-            --primary-light: {{PRIMARY_LIGHT}};
-            --success-color: {{SUCCESS_COLOR}};
-            --warning-color: {{WARNING_COLOR}};
-            --error-color: {{ERROR_COLOR}};
+            /* 字体 */
+            --font-heading: '{{FONT_HEADING}}', sans-serif;
+            --font-body: '{{FONT_BODY}}', sans-serif;
+
+            /* 色彩体系 - 主色突出、点缀鲜明 */
+            --bg-primary: {{BG_PRIMARY}};
+            --bg-secondary: {{BG_SECONDARY}};
+            --bg-card: {{BG_CARD}};
+            --text-primary: {{TEXT_PRIMARY}};
+            --text-secondary: {{TEXT_SECONDARY}};
+            --accent: {{ACCENT}};              /* 主色 - 80% 视觉焦点 */
+            --accent-hover: {{ACCENT_HOVER}};
+            --accent-secondary: {{ACCENT_SECONDARY}}; /* 点缀色 - 关键交互 */
+            --success: {{SUCCESS_COLOR}};
+            --warning: {{WARNING_COLOR}};
+            --error: {{ERROR_COLOR}};
+            --border: {{BORDER_COLOR}};
+            --shadow-color: {{SHADOW_COLOR}};
+
+            /* 特效变量 */
+            --glow: 0 0 30px -5px var(--accent);
+            --hard-shadow: {{HARD_SHADOW}};
         }
+
+        /* ============================================
+           字体排版 - 强字重对比
+           ============================================ */
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 800;  /* 强字重 */
+        }
+
+        .text-display {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        /* ============================================
+           动效系统 - 入场动画 + 微交互
+           ============================================ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: var(--glow); }
+            50% { box-shadow: 0 0 50px -5px var(--accent); }
+        }
+
+        /* 入场动画类 */
+        .animate-in {
+            opacity: 0;
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* ============================================
+           组件样式 - 独特设计语言
+           ============================================ */
     </style>
     <style type="text/tailwindcss">
         @layer components {
-            /* 卡片 */
-            .card {
-                @apply bg-white rounded-lg shadow p-6;
-            }
-            /* 按钮 */
+            /* ==================== 按钮 ==================== */
             .btn {
-                @apply px-4 py-2 rounded transition-colors inline-flex items-center gap-2;
+                @apply inline-flex items-center justify-center gap-2 font-medium transition-all duration-300;
+                font-family: var(--font-body);
             }
             .btn-primary {
-                background-color: var(--primary-color);
+                background: var(--accent);
                 color: white;
+                @apply px-6 py-3;
             }
             .btn-primary:hover {
-                background-color: var(--primary-hover);
+                background: var(--accent-hover);
+                transform: translateY(-2px);
+                box-shadow: var(--glow);
             }
             .btn-secondary {
-                @apply bg-white text-gray-700 border border-gray-300 hover:bg-gray-50;
+                background: transparent;
+                color: var(--text-primary);
+                border: 1px solid var(--border);
+                @apply px-6 py-3;
+            }
+            .btn-secondary:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+            .btn-ghost {
+                background: transparent;
+                color: var(--text-secondary);
+                @apply px-4 py-2;
+            }
+            .btn-ghost:hover {
+                color: var(--accent);
+                background: color-mix(in srgb, var(--accent) 10%, transparent);
             }
             .btn-danger {
-                background-color: var(--error-color);
+                background: var(--error);
                 color: white;
+                @apply px-6 py-3;
             }
             .btn-danger:hover {
                 filter: brightness(1.1);
+                transform: translateY(-2px);
             }
-            /* 表单 */
+
+            /* ==================== 卡片 ==================== */
+            .card {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                @apply rounded-lg p-6;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .card:hover {
+                border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+                box-shadow: 0 10px 40px -15px var(--shadow-color);
+            }
+            .card-glass {
+                background: color-mix(in srgb, var(--bg-card) 80%, transparent);
+                backdrop-filter: blur(10px);
+                border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+            }
+
+            /* ==================== 表单 ==================== */
             .form-input {
-                @apply w-full border border-gray-300 rounded px-3 py-2 focus:border-blue-500 focus:outline-none;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text-primary);
+                @apply w-full px-4 py-3 rounded-lg;
+                font-family: var(--font-body);
+                transition: all 0.2s ease;
             }
             .form-input:focus {
-                border-color: var(--primary-color);
+                outline: none;
+                border-color: var(--accent);
+                box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+            }
+            .form-input::placeholder {
+                color: var(--text-secondary);
+                opacity: 0.6;
             }
             .form-label {
-                @apply block text-gray-700 font-medium mb-1;
+                @apply block mb-2 font-medium;
+                color: var(--text-primary);
+                font-family: var(--font-body);
             }
-            /* 标签 */
-            .tag {
-                @apply px-2 py-1 rounded text-xs;
+
+            /* ==================== 表格 ==================== */
+            .table-container {
+                @apply overflow-x-auto rounded-lg;
+                border: 1px solid var(--border);
             }
-            .tag-success {
-                background-color: var(--success-color);
-                color: white;
+            .table {
+                @apply w-full;
             }
-            .tag-warning {
-                background-color: var(--warning-color);
-                color: white;
+            .table th {
+                background: var(--bg-secondary);
+                color: var(--text-secondary);
+                @apply px-4 py-3 text-left text-sm font-medium;
+                font-family: var(--font-body);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
             }
-            .tag-danger {
-                background-color: var(--error-color);
-                color: white;
+            .table td {
+                @apply px-4 py-4 border-t;
+                border-color: var(--border);
+                color: var(--text-primary);
             }
-            .tag-info {
-                background-color: var(--primary-color);
-                color: white;
+            .table tr:hover td {
+                background: color-mix(in srgb, var(--accent) 5%, transparent);
             }
-            /* 侧边栏菜单项 */
-            .menu-item {
-                @apply flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors;
+
+            /* ==================== 标签/徽章 ==================== */
+            .badge {
+                @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium;
             }
-            .menu-item-active {
-                background-color: var(--primary-light);
-                color: var(--primary-color);
+            .badge-primary {
+                background: color-mix(in srgb, var(--accent) 15%, transparent);
+                color: var(--accent);
             }
-            .menu-item-active:hover {
-                background-color: var(--primary-light);
+            .badge-success {
+                background: color-mix(in srgb, var(--success) 15%, transparent);
+                color: var(--success);
             }
-            /* 弹窗遮罩 */
+            .badge-warning {
+                background: color-mix(in srgb, var(--warning) 15%, transparent);
+                color: var(--warning);
+            }
+            .badge-error {
+                background: color-mix(in srgb, var(--error) 15%, transparent);
+                color: var(--error);
+            }
+
+            /* ==================== 导航 ==================== */
+            .nav-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200;
+                color: var(--text-secondary);
+            }
+            .nav-item:hover {
+                background: color-mix(in srgb, var(--accent) 10%, transparent);
+                color: var(--accent);
+            }
+            .nav-item-active {
+                background: color-mix(in srgb, var(--accent) 15%, transparent);
+                color: var(--accent);
+                font-weight: 500;
+            }
+
+            /* ==================== 弹窗 ==================== */
             .modal-overlay {
-                @apply fixed inset-0 bg-black/50 z-50;
+                @apply fixed inset-0 z-50;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                animation: fadeIn 0.2s ease;
             }
             .modal-content {
-                @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-xl z-50;
+                @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-lg;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                @apply rounded-xl shadow-2xl;
+                animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
-            /* 业务逻辑提示气泡 */
+
+            /* ==================== 业务逻辑提示气泡 ==================== */
             .business-tip {
                 @apply relative inline-flex items-center;
             }
             .business-tip-icon {
-                @apply w-5 h-5 inline-flex items-center justify-center text-sm cursor-help bg-amber-100 rounded-full;
+                @apply w-5 h-5 inline-flex items-center justify-center text-sm cursor-help rounded-full ml-1;
+                background: color-mix(in srgb, var(--warning) 20%, transparent);
+                color: var(--warning);
             }
             .business-tip-content {
-                @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-white rounded-lg shadow-lg border text-sm text-gray-700 hidden z-50 whitespace-pre-line max-h-72 overflow-y-auto;
+                @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 rounded-lg shadow-lg border text-sm hidden z-50 whitespace-pre-line max-h-72 overflow-y-auto;
+                background: var(--bg-card);
+                border-color: var(--border);
+                color: var(--text-primary);
             }
             .business-tip:hover .business-tip-content {
                 @apply block;
+            }
+
+            /* ==================== 装饰性元素 ==================== */
+            .gradient-border {
+                position: relative;
+                background: var(--bg-card);
+            }
+            .gradient-border::before {
+                content: '';
+                position: absolute;
+                inset: -1px;
+                background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+                border-radius: inherit;
+                z-index: -1;
+                opacity: 0.5;
+            }
+
+            .hard-shadow {
+                box-shadow: var(--hard-shadow);
+            }
+
+            .glow-effect {
+                box-shadow: var(--glow);
             }
         }
     </style>
