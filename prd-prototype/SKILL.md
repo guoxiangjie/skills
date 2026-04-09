@@ -170,7 +170,20 @@ prd/prototype/                  # 原型目录（固定路径）
 9. 生成映射文档（mapping.md）
 10. 确认完成并提示预览
 
-**注意**：研发人员模式的后续步骤待补充。
+**执行流程（研发人员模式）**：
+1. 检查 PRD 文档，确定产物路径（prd/prototype/）
+2. 扫描并读取模块 PRD（基于实际存在的模块 PRD 文件）
+3. 从模块 PRD 提取页面内容（功能需求、字段定义、界面设计）
+4. 选择使用人身份 → 研发人员
+5. 确认技术栈：React 18 + Ant Design + Zustand + React Router v6
+5.5. 检测并安装依赖 Skills（vercel-react-best-practices、vercel-composition-patterns）
+6. 全局分析与组件设计（提取公共组件、类型定义、Mock 数据，使用 composition-patterns）
+7. 生成项目脚手架（Vite + TypeScript + SPA 架构）
+8. 生成全局公共组件（CommonTable、CommonModal 等）
+9. 逐页生成页面组件（使用 react-best-practices 确保代码质量）
+10. 路由注册与整合
+11. 最终完整性检查（TypeScript 编译、路由、Mock 数据）
+12. 确认完成，提示 pnpm run dev
 
 ### check 命令
 
@@ -241,7 +254,9 @@ prd/prototype/                  # 原型目录（固定路径）
 4. **完整导航结构**：每个页面必须包含 Logo（点击返回首页）、侧边栏菜单、面包屑导航
 5. **内容完整**：表格必须有数据和操作列，表单必须有完整字段，禁止使用 alert/confirm/prompt
 6. **统一图标库**：所有技术栈统一使用 Lucide 图标，保持视觉一致
-7. **身份区分**：需求/项目经理模式使用 HTML+Tailwind，研发人员模式后续待补充
+7. **身份区分**：需求/项目经理模式使用 HTML+Tailwind，研发人员模式使用 React 18+Ant Design+Zustand
+8. **SPA 架构**：研发人员模式生成完整的 SPA 单页应用，包含路由、布局、公共组件、Mock 数据
+9. **代码质量**：研发人员模式产物是正式前端项目，需 TypeScript 严格类型、CSS Modules 样式隔离
 
 ## 📋 页面规划原则
 
@@ -282,7 +297,30 @@ prd/prototype/                  # 原型目录（固定路径）
 | 身份 | 技术栈 | 适用场景 | 后续流程 |
 |------|--------|----------|----------|
 | **需求、项目经理** | HTML + Tailwind CSS | 快速原型、产品演示、需求评审 | 进入设计风格选择 |
-| **研发人员** | 待选择 | 开发团队对接、技术评审 | 后续步骤待补充 |
+| **研发人员** | React 18 + Ant Design + Zustand | 开发团队对接、技术评审、项目实现 | 全局分析+脚手架+逐页生成 |
+
+### 研发人员模式技术选型
+
+| 技术项 | 选型 |
+|--------|------|
+| React | 18.x |
+| 路由 | React Router v6 |
+| 状态管理 | Zustand |
+| UI 组件库 | Ant Design |
+| 样式方案 | Ant Design 内置 + CSS Modules |
+| TypeScript | 严格模式 |
+| 构建工具 | Vite |
+| 架构 | SPA 单页应用 |
+
+### 研发人员模式特点
+
+- **SPA 架构**：React Router v6 路由，Ant Design Pro 风格布局
+- **组件拆分**：先分析全局公共组件，再逐页生成页面组件
+- **类型安全**：完整 TypeScript 类型定义
+- **Mock 数据**：内置模拟数据层，无需后端即可运行
+- **正式项目**：产物可直接作为项目实现代码使用
+- **代码质量**：使用 `vercel-react-best-practices` 和 `vercel-composition-patterns` skills 确保代码质量
+- **自动安装**：流程中自动检测并安装所需 skills，未安装时 fallback 到内置规则
 
 ## 🎨 预设设计风格选择
 
@@ -325,4 +363,4 @@ prd/prototype/                  # 原型目录（固定路径）
 
 ---
 
-*最后更新：2026-04-09 (使用人身份选择 + 预设设计风格 + 模块 PRD 内容依赖)*
+*最后更新：2026-04-09 (研发人员模式完整流程 + React SPA 架构)*

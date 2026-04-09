@@ -11,7 +11,8 @@
 1. ✅ 步骤 1：确认产物路径 - 必须询问用户是否确认
 2. ✅ 步骤 4：选择使用人身份 - 必须询问用户选择身份
 3. ✅ 步骤 5：选择设计风格 - 仅需求/项目经理模式，必须询问用户选择
-4. ✅ 步骤 6：页面规划确认 - 必须展示页面契约并询问用户确认
+4. ✅ 步骤 5R：技术栈确认 - 仅研发人员模式
+5. ✅ 步骤 6/6R：页面规划/全局设计确认 - 必须展示并询问用户确认
 
 **如果用户没有明确选择，必须停下来询问，不能自动推进流程。**
 
@@ -21,29 +22,54 @@
 
 本命令采用三阶段质量保障，确保原型完整性和正确性：
 
+### 需求/项目经理模式
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  阶段1: 规划锁定（步骤 2-6）                                  │
+│  阶段1: 规划锁定（步骤 1-6）                                  │
+│  ├── 步骤 1: 检查 PRD 文档，确定产物路径                       │
 │  ├── 步骤 2: 扫描模块 PRD，读取内容                            │
-│  ├── 步骤 3: 生成页面规划                                     │
+│  ├── 步骤 3: 生成页面规划                                      │
 │  ├── 步骤 4: 选择使用人身份                                   │
-│  ├── 步骤 5: 选择设计风格（仅需求/项目经理模式）               │
+│  ├── 步骤 5: 选择设计风格                                     │
 │  └── 步骤 6: 生成 pages.json 页面契约，用户确认锁定            │
 ├─────────────────────────────────────────────────────────────┤
-│  阶段2: 按序生成 + 即时验证（步骤 7）                          │
-│  ├── 读取 pages.json 作为生成队列                             │
-│  ├── 每个页面生成前: 验证引用链接的合法性                       │
-│  ├── 每个页面生成后: 页面完整性自检                            │
-│  └── 不合格则重试（最多2次）                                  │
+│  阶段2: 按序生成 + 即时验证（步骤 7-8）                        │
+│  ├── 步骤 7: 创建项目目录                                      │
+│  └── 步骤 8: 按队列生成页面内容 + 即时验证                     │
 ├─────────────────────────────────────────────────────────────┤
-│  阶段3: 最终完整性检查（步骤 8-10）                            │
-│  ├── 步骤 8: 最终完整性检查                                   │
-│  ├── 步骤 9: 生成映射文档                                     │
-│  └── 步骤 10: 确认完成                                        │
+│  阶段3: 最终完整性检查（步骤 9-11）                            │
+│  ├── 步骤 9: 最终完整性检查                                   │
+│  ├── 步骤 10: 生成映射文档                                    │
+│  └── 步骤 11: 确认完成                                        │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**注意**：研发人员模式的后续步骤待补充。
+### 研发人员模式
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  阶段1: 规划锁定（步骤 1-6R）                                 │
+│  ├── 步骤 1: 检查 PRD 文档，确定产物路径                       │
+│  ├── 步骤 2: 扫描模块 PRD，读取内容                            │
+│  ├── 步骤 3: 生成页面规划                                      │
+│  ├── 步骤 4: 选择使用人身份                                   │
+│  ├── 步骤 5R: 选择技术栈（React 18 + Ant Design）             │
+│  └── 步骤 6R: 全局分析与组件设计，用户确认锁定                 │
+├─────────────────────────────────────────────────────────────┤
+│  阶段2: 按序生成 + 即时验证（步骤 7R-9R）                      │
+│  ├── 步骤 7R: 生成项目脚手架                                   │
+│  ├── 步骤 8R: 生成全局公共组件                                 │
+│  └── 步骤 9R: 按队列生成页面组件 + 即时验证                    │
+├─────────────────────────────────────────────────────────────┤
+│  阶段3: 最终完整性检查（步骤 10R-12R）                         │
+│  ├── 步骤 10R: 路由注册与整合                                  │
+│  ├── 步骤 11R: 最终完整性检查                                  │
+│  └── 步骤 12R: 确认完成                                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**注意**：两种模式的后续流程不同，根据身份选择进入对应流程。
 
 ---
 
@@ -309,13 +335,477 @@ prd/                → prd/prototype/
 #### 4.2 研发人员模式
 
 选择此模式后：
-- **技术栈可选**：后续步骤可选择具体技术栈
-- **后续流程**：待补充（根据研发需求定制）
+- **技术栈固定**：React 18 + Ant Design + React Router v6 + Zustand
+- **构建工具**：Vite + TypeScript
+- **后续流程**：进入研发人员专属流程（步骤 5R-11R）
 
 ```
 ✅ 已选择：【研发人员】模式
+   技术栈：React 18 + Ant Design + Zustand
+   构建工具：Vite + TypeScript
+   路由：React Router v6
 
-后续配置步骤开发中...
+进入全局组件分析与组件设计...
+```
+
+---
+
+### 步骤 5R ~ 11R：研发人员专属流程
+
+**⚠️ 以下步骤仅在选择"研发人员"模式时执行！**
+
+研发人员模式生成的产物是**完整的 SPA 前端项目**，不仅承载原型演示，后续可直接作为项目实现代码使用。
+
+---
+
+#### 步骤 5R：选择技术栈
+
+**技术栈固定**，无需选择：
+
+| 技术项 | 选型 |
+|--------|------|
+| React | 18.x |
+| 路由 | React Router v6 |
+| 状态管理 | Zustand |
+| UI 组件库 | Ant Design |
+| 样式方案 | Ant Design 内置 + CSS Modules |
+| TypeScript | 严格模式 |
+| 构建工具 | Vite |
+
+```
+✅ 技术栈已确认：React 18 + Ant Design + Zustand + React Router v6
+```
+
+---
+
+#### 步骤 5.5R：检测并安装依赖 Skills
+
+**在开始全局分析之前，检测并安装代码质量相关的 skills。**
+
+```
+📦 检测依赖 skills...
+```
+
+##### 5.5R.1 检测 vercel-react-best-practices
+
+检查是否已安装，如未安装则自动安装：
+
+```bash
+# 检测
+ls ~/.agents/skills/vercel-react-best-practices/ 2>/dev/null
+
+# 如未安装，执行安装
+npx @anthropic-ai/claude-skills install vercel-labs/agent-skills#vercel-react-best-practices
+```
+
+##### 5.5R.2 检测 vercel-composition-patterns
+
+检查是否已安装，如未安装则自动安装：
+
+```bash
+# 检测
+ls ~/.agents/skills/vercel-composition-patterns/ 2>/dev/null
+
+# 如未安装，执行安装
+npx @anthropic-ai/claude-skills install vercel-labs/agent-skills#vercel-composition-patterns
+```
+
+##### 5.5R.3 展示检测结果
+
+```
+📦 检测依赖 skills...
+
+├── vercel-react-best-practices ..... ✅ 已安装
+└── vercel-composition-patterns ..... 📥 安装中... ✅ 安装完成
+
+✅ 依赖检查完成，后续代码生成将使用以下 skills：
+   - vercel-react-best-practices → React 性能优化规则
+   - vercel-composition-patterns → React 组件组合模式
+```
+
+---
+
+#### 步骤 6R：全局分析与组件设计
+
+**⚠️ 这是保证代码质量的关键步骤！**
+
+**使用的 skills：**
+- `vercel-composition-patterns` → 指导公共组件拆分和组合方式
+
+先分析所有模块 PRD，提取公共组件，再逐页生成。
+
+##### 6R.1 分析所有模块 PRD
+
+从所有模块 PRD 中提取：
+
+| 提取内容 | 用途 |
+|----------|------|
+| 表格字段清单 | 定义全局表格列类型、表格组件 |
+| 表单字段清单 | 定义全局表单类型、表单组件 |
+| 弹窗清单 | 定义全局弹窗组件 |
+| 搜索/筛选条件 | 定义全局搜索组件 |
+| 操作按钮清单 | 定义全局按钮组件组 |
+
+```
+📊 全局分析结果：
+
+已分析 {{N}} 个模块 PRD：
+├── M001_用户管理_prd.md
+│   ├── 表格：用户列表（用户名、姓名、角色、状态、创建时间）
+│   ├── 表单：新增/编辑（用户名、姓名、角色、状态、备注）
+│   └── 弹窗：新增弹窗、编辑弹窗、详情弹窗、删除确认
+├── M002_订单管理_prd.md
+│   ├── 表格：订单列表（订单号、用户、金额、状态、时间）
+│   ├── 表单：搜索（订单号、状态、时间范围）
+│   └── 弹窗：详情抽屉
+└── M003_商品管理_prd.md
+    ├── 表格：商品列表（名称、分类、价格、库存、状态）
+    └── 弹窗：新增弹窗、编辑弹窗
+```
+
+##### 6R.2 识别公共组件
+
+根据分析结果，识别可复用的全局公共组件：
+
+```
+📦 公共组件清单：
+
+全局组件（src/components/）
+├── CommonTable/          通用表格组件（所有页面复用）
+│   ├── index.tsx
+│   ├── index.module.css
+│   └── types.ts
+├── CommonModal/          通用弹窗组件
+│   ├── index.tsx
+│   └── index.module.css
+├── SearchBar/            通用搜索筛选组件
+│   ├── index.tsx
+│   └── index.module.css
+├── PageContainer/        页面容器（面包屑+标题+内容区）
+│   ├── index.tsx
+│   └── index.module.css
+└── ActionButtons/        操作列按钮组
+    ├── index.tsx
+    └── index.module.css
+```
+
+##### 6R.3 定义 TypeScript 类型
+
+在 `src/types/` 中定义全局类型：
+
+```
+📝 类型定义清单：
+
+全局类型（src/types/）
+├── index.ts              类型入口
+├── common.ts             公共类型（ApiResponse、PageResult 等）
+├── user.ts               用户模块类型
+├── order.ts              订单模块类型
+└── product.ts            商品模块类型
+```
+
+##### 6R.4 设计 Mock 数据层
+
+```
+📦 Mock 数据层：
+
+Mock 数据（src/mock/）
+├── index.ts              Mock 入口
+├── users.ts              用户模块数据
+├── orders.ts             订单模块数据
+└── products.ts           商品模块数据
+```
+
+##### 6R.5 展示全局设计并确认
+
+**⚠️ 必须展示完整设计，等待用户确认！**
+
+```
+📊 全局设计确认：
+
+【项目结构】
+  React 18 + Ant Design + Zustand + React Router v6
+  SPA 单页应用架构
+
+【公共组件】共 {{N}} 个
+  CommonTable / CommonModal / SearchBar / PageContainer / ...
+
+【类型定义】共 {{N}} 个模块
+  common.ts / user.ts / order.ts / ...
+
+【Mock 数据】共 {{N}} 个模块
+  users.ts / orders.ts / products.ts / ...
+
+【页面组件】共 {{N}} 个页面
+  login / dashboard / user-management / order-management / ...
+
+确认全局设计？
+1. ✅ 确认，开始生成项目
+2. ✏️ 调整公共组件清单
+3. ✏️ 调整类型定义
+4. ❌ 取消操作
+```
+
+---
+
+#### 步骤 7R：生成项目脚手架
+
+**生成完整的前端项目脚手架结构：**
+
+```
+prd/prototype/
+├── package.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+├── index.html
+├── .gitignore
+└── src/
+    ├── main.tsx                    # React 18 入口
+    ├── App.tsx                     # 路由根组件
+    ├── routes.tsx                  # React Router v6 路由配置
+    ├── styles/
+    │   ├── global.css              # 全局样式
+    │   ├── variables.css           # CSS 变量
+    │   └── index.css               # 样式入口
+    ├── layouts/
+    │   ├── MainLayout.tsx          # 主布局（Ant Design Pro 风格）
+    │   ├── SiderMenu.tsx           # 侧边栏菜单
+    │   └── HeaderBar.tsx           # 顶部导航
+    ├── components/                 # 全局公共组件
+    ├── store/                      # Zustand Store
+    ├── mock/                       # Mock 数据层
+    ├── types/                      # 全局类型定义
+    └── pages/                      # 页面组件
+```
+
+**布局组件说明**（Ant Design Pro 风格）：
+
+```
+MainLayout（主布局）
+├── ProLayout 风格
+├── SiderMenu（侧边栏）
+│   ├── Logo 区域
+│   └── 菜单（基于 nav_items 配置）
+├── HeaderBar（顶部）
+│   ├── 面包屑
+│   ├── 通知
+│   └── 用户信息
+└── Content（内容区）
+    └── <Outlet />（路由渲染）
+```
+
+**路由配置**（React Router v6）：
+
+```tsx
+// routes.tsx 示例
+{
+  path: '/',
+  element: <MainLayout />,
+  children: [
+    { path: 'login', element: <LoginPage /> },
+    { path: 'dashboard', element: <DashboardPage /> },
+    { path: 'user', element: <UserManagementPage /> },
+    { path: 'order', element: <OrderManagementPage /> },
+    { path: '*', element: <Navigate to="/dashboard" replace /> }
+  ]
+}
+```
+
+**Mock 数据层设计**：
+
+```
+Mock 层要求：
+├── 模拟真实 API 接口
+├── 支持分页参数（page、pageSize）
+├── 支持搜索/筛选参数
+├── 返回标准响应格式：
+│   { code: 200, data: { list: T[], total: number }, message: "success" }
+└── 延迟模拟（setTimeout 300ms）
+```
+
+**Zustand Store 设计**：
+
+```
+Store 层：
+├── appStore.ts     全局应用状态（菜单折叠、主题等）
+├── userStore.ts    用户模块状态（登录状态、用户信息）
+└── index.ts        Store 入口
+```
+
+---
+
+#### 步骤 8R：生成全局公共组件
+
+在生成页面之前，先生成所有公共组件：
+
+```
+📦 生成公共组件...
+
+[1/N] CommonTable ............ ✅ 完成
+[2/N] CommonModal ............ ✅ 完成
+[3/N] SearchBar .............. ✅ 完成
+[4/N] PageContainer .......... ✅ 完成
+[5/N] ActionButtons .......... ✅ 完成
+
+✅ 公共组件生成完成
+```
+
+**组件质量要求**：
+- ✅ TypeScript 严格类型
+- ✅ CSS Modules 样式隔离
+- ✅ 支持 Ant Design 主题定制
+- ✅ 完整的 Props 类型定义
+- ✅ 支持 Loading/Error/Empty 状态
+
+---
+
+#### 步骤 9R：逐页生成页面组件
+
+**使用的 skills：**
+- `vercel-react-best-practices` → React 性能优化规则（消除瀑布、包大小优化、重渲染优化）
+
+按模块 PRD 逐个生成页面组件，每个页面拆分为：
+
+```
+页面组件结构（以 user-management 为例）：
+
+pages/user-management/
+├── index.tsx                 页面主组件
+├── index.module.css          页面样式
+└── components/
+    ├── UserTable.tsx         表格组件
+    ├── UserSearch.tsx        搜索组件
+    ├── UserModal.tsx         新增/编辑弹窗
+    └── UserDetail.tsx        详情组件
+```
+
+**串行生成**（保证质量）：
+
+```
+📋 页面生成队列（共 5 个页面）
+
+[1/5] login .................... ✅ 完成
+[2/5] dashboard ................ ✅ 完成
+[3/5] user-management .......... ✅ 完成
+[4/5] order-management ......... ✅ 完成
+[5/5] product-management ....... ✅ 完成
+```
+
+**每个页面验证**：
+- ✅ 组件类型完整
+- ✅ 路由配置正确
+- ✅ Mock 数据绑定
+- ✅ 无 TypeScript 编译错误
+- ✅ 失败重试最多 2 次
+
+---
+
+#### 步骤 10R：路由注册与整合
+
+生成完成后，统一注册所有路由和导航菜单：
+
+```
+🔗 路由注册...
+
+✅ 路由配置完成：
+├── /login           → LoginPage
+├── /dashboard       → DashboardPage
+├── /user            → UserManagementPage
+├── /order           → OrderManagementPage
+└── /product         → ProductManagementPage
+
+✅ 侧边栏菜单配置完成
+✅ 面包屑导航配置完成
+```
+
+---
+
+#### 步骤 11R：最终完整性检查
+
+```
+🔍 项目完整性检查...
+
+【项目结构】
+  ✅ package.json 依赖完整
+  ✅ tsconfig.json 配置正确
+  ✅ vite.config.ts 配置正确
+  ✅ 入口文件存在
+
+【布局组件】
+  ✅ MainLayout 存在
+  ✅ SiderMenu 存在
+  ✅ HeaderBar 存在
+
+【公共组件】
+  ✅ CommonTable 存在
+  ✅ CommonModal 存在
+  ✅ SearchBar 存在
+  ✅ PageContainer 存在
+
+【页面组件】
+  ✅ login/index.tsx
+  ✅ dashboard/index.tsx
+  ✅ user-management/index.tsx
+  ✅ order-management/index.tsx
+  ✅ product-management/index.tsx
+
+【路由配置】
+  ✅ 所有页面已注册
+  ✅ 默认路由配置
+
+【Mock 数据】
+  ✅ 用户模块数据
+  ✅ 订单模块数据
+  ✅ 商品模块数据
+
+【代码质量】
+  ✅ 无 TypeScript 编译错误
+  ✅ 无未使用的导入
+  ✅ 类型定义完整
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ 项目完整性检查通过！
+```
+
+---
+
+#### 步骤 12R：确认完成
+
+```
+✅ SPA 前端项目已成功生成：prd/prototype/
+
+目录结构：
+prd/prototype/
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── index.html
+└── src/
+    ├── main.tsx
+    ├── App.tsx
+    ├── routes.tsx
+    ├── layouts/          布局组件
+    ├── components/       公共组件
+    ├── store/            Zustand Store
+    ├── mock/             Mock 数据层
+    ├── types/            类型定义
+    └── pages/            页面组件
+
+技术栈：React 18 + Ant Design + Zustand + React Router v6
+构建工具：Vite + TypeScript
+架构：SPA 单页应用
+
+启动命令：
+  cd prd/prototype
+  pnpm install
+  pnpm run dev
+
+提示：
+  - 这是一个完整的前端项目，可直接运行
+  - Mock 数据已配置，无需后端即可展示
+  - 后续可对接真实 API 接口
 ```
 
 ---
