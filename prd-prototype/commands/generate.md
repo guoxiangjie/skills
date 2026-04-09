@@ -62,10 +62,11 @@
 │  ├── 步骤 8R: 生成全局公共组件                                 │
 │  └── 步骤 9R: 按队列生成页面组件 + 即时验证                    │
 ├─────────────────────────────────────────────────────────────┤
-│  阶段3: 最终完整性检查（步骤 10R-12R）                         │
-│  ├── 步骤 10R: 路由注册与整合                                  │
-│  ├── 步骤 11R: 最终完整性检查                                  │
-│  └── 步骤 12R: 确认完成                                       │
+│  阶段3: 最终完整性检查（步骤 10.5R-12R）                       │
+│  ├── 步骤 10.5R: 运行与构建验证                                │
+│  ├── 步骤 11R: 路由注册与整合                                  │
+│  ├── 步骤 12R: 最终完整性检查                                  │
+│  └── 步骤 13R: 确认完成                                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -337,7 +338,7 @@ prd/                → prd/prototype/
 选择此模式后：
 - **技术栈固定**：React 18 + Ant Design + React Router v6 + Zustand
 - **构建工具**：Vite + TypeScript
-- **后续流程**：进入研发人员专属流程（步骤 5R-11R）
+- **后续流程**：进入研发人员专属流程（步骤 5R-13R）
 
 ```
 ✅ 已选择：【研发人员】模式
@@ -350,7 +351,7 @@ prd/                → prd/prototype/
 
 ---
 
-### 步骤 5R ~ 11R：研发人员专属流程
+### 步骤 5R ~ 13R：研发人员专属流程
 
 **⚠️ 以下步骤仅在选择"研发人员"模式时执行！**
 
@@ -516,6 +517,165 @@ Mock 数据（src/mock/）
 └── products.ts           商品模块数据
 ```
 
+##### 6R.4.5 Ant Design Pro 风格规范
+
+**⚠️ 研发人员模式固定使用 Ant Design Pro 官网风格，无需用户选择。**
+
+严格参考 Ant Design Pro 官网效果（preview.pro.ant.design），使用 `@ant-design/pro-components` 的 ProLayout 组件实现布局，禁止手动实现侧边栏+顶部。
+
+**全局主题配置**：
+
+```tsx
+// main.tsx
+import { ConfigProvider } from 'antd';
+import { ProConfigProvider } from '@ant-design/pro-components';
+
+<ConfigProvider
+  theme={{
+    token: {
+      colorPrimary: '#1677FF',
+      borderRadius: 6,
+      colorBgLayout: '#F0F2F5',
+    },
+  }}
+>
+  <ProConfigProvider>
+    <App />
+  </ProConfigProvider>
+</ConfigProvider>
+```
+
+**MainLayout 必须使用 ProLayout 组件**：
+
+```tsx
+// src/layouts/MainLayout.tsx
+import { ProLayout } from '@ant-design/pro-components';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+
+const menuData = [
+  { path: '/dashboard', name: 'Dashboard', icon: 'dashboard' },
+  { path: '/user', name: '用户管理', icon: 'user' },
+  // ... 基于 nav_items 配置
+];
+
+function MainLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  return (
+    <ProLayout
+      title={projectName}
+      logo={<LogoIcon />}
+      layout="side"
+      fixSiderbar
+      fixHeader
+      contentWidth="Fluid"
+      splitMenus={false}
+      menu={{ locale: false }}
+      route={{ routes: menuData }}
+      location={{ pathname: location.pathname }}
+      onMenuHeaderClick={() => navigate('/dashboard')}
+      menuItemRender={(item, dom) => (
+        <a onClick={() => navigate(item.path || '/dashboard')}>{dom}</a>
+      )}
+      avatarProps={{
+        src: userAvatar,
+        title: userName,
+      }}
+      actionsRender={() => [
+        // 通知铃铛等
+      ]}
+      breadcrumbRender={(r) => [{ title: '首页', path: '/dashboard' }, ...r]}
+      pageTitleRender={(p) => p.route?.name}
+    >
+      <Outlet />
+    </ProLayout>
+  );
+}
+```
+
+**ProLayout 生成的效果**（严格匹配官网）：
+- 左侧固定侧边栏 208px，纯白背景
+- 顶部和侧边栏融为一体，顶栏纯白
+- 面包屑在白色区域，"首页 / 当前页"
+- 顶部右侧：搜索框 + 全局操作图标 + 用户头像下拉
+- 当前菜单项：主色 `#1677FF` 高亮
+
+**页面组件使用 PageContainer**：
+
+```tsx
+// 每个页面必须用 PageContainer 包裹
+import { PageContainer } from '@ant-design/pro-components';
+
+function DashboardPage() {
+  return (
+    <PageContainer
+      title="分析页"
+      content="分析页默认拥有适量的文字说明"
+    >
+      <Row gutter={[16, 16]}>
+        {/* 统计卡片 */}
+        <Col span={6}>
+          <Card>
+            <Statistic title="总销售额" value={126560} prefix="¥" />
+          </Card>
+        </Col>
+        {/* ... */}
+      </Row>
+    </PageContainer>
+  );
+}
+```
+
+**页面内容区规范**（匹配官网效果）：
+- 页面背景：`#F0F2F5` 浅灰
+- 卡片：纯白 `#FFFFFF`，圆角 6px，无边框
+- 统计卡片：底部 3px 装饰线（蓝 `#1677FF` / 绿 `#52C41A` / 橙 `#FA8C16` / 紫 `#722ED1`）
+- 统计数字：字号 30px，字重 600
+- 统计标题：字号 14px，颜色 `#00000072`
+- 卡片间距：16px（`gutter={[16, 16]}`）
+- 页面标题：字号 20px，字重 600
+- 页面描述：字号 14px，颜色 `#00000072`
+
+**Dashboard 数据页布局**（匹配官网分析页）：
+```
+┌─────────────────────────────────────────────────────────┐
+│  分析页              [分析页默认拥有适量的文字说明]       │
+├────────┬────────┬────────┬──────────────────────────────┤
+│ 总销售额│ 访问量 │ 支付笔数│ 运营活动效果                  │
+│ ¥126,560│ 8,846 │ 6,560  │ 78%                          │
+│ ↑ 12%  │ ↓ 3%   │ ↑ 5%   │ ↑ 8%                         │
+├────────┴────────┴────────┴──────────────────────────────┤
+│  [左 2/3] 访问趋势                      [右 1/3] 排行榜  │
+│  折线图/柱状图                          列表1-10         │
+├──────────────────────────────┬───────────────────────────┤
+│  表格：最近交易/订单         │  列表/卡片：热门商品      │
+└──────────────────────────────┴───────────────────────────┘
+```
+
+**搜索表单规范**：
+```tsx
+import { ProTable } from '@ant-design/pro-components';
+
+// 使用 ProTable 自带搜索表单
+<ProTable
+  columns={columns}
+  request={async (params) => { /* 搜索逻辑 */ }}
+  search={{
+    labelWidth: 'auto',
+    defaultCollapsed: true,  // 默认收起搜索表单
+  }}
+/>
+```
+
+**⚠️ 禁止项**：
+- ❌ 不要手动写 `<Sider>` + `<Header>` + `<Content>` 布局
+- ❌ 不要自己实现侧边栏菜单样式
+- ❌ 不要自定义面包屑位置和样式
+- ✅ 必须使用 ProLayout + PageContainer + ProTable
+
+---
+
 ##### 6R.5 展示全局设计并确认
 
 **⚠️ 必须展示完整设计，等待用户确认！**
@@ -524,8 +684,15 @@ Mock 数据（src/mock/）
 📊 全局设计确认：
 
 【项目结构】
-  React 18 + Ant Design + Zustand + React Router v6
+  React 18 + Ant Design + @ant-design/pro-components + Zustand + React Router v6
   SPA 单页应用架构
+
+【视觉风格】
+  Ant Design Pro 官方规范（preview.pro.ant.design）
+  主色：#1677FF（蚂蚁蓝）
+  页面背景：#F5F5F5
+  侧边栏：208px 白色固定
+  顶部：48px 白色固定
 
 【公共组件】共 {{N}} 个
   CommonTable / CommonModal / SearchBar / PageContainer / ...
@@ -561,17 +728,13 @@ prd/prototype/
 ├── index.html
 ├── .gitignore
 └── src/
-    ├── main.tsx                    # React 18 入口
+    ├── main.tsx                    # React 18 入口 + ConfigProvider + ProConfigProvider
     ├── App.tsx                     # 路由根组件
     ├── routes.tsx                  # React Router v6 路由配置
     ├── styles/
-    │   ├── global.css              # 全局样式
-    │   ├── variables.css           # CSS 变量
-    │   └── index.css               # 样式入口
+    │   └── index.css               # 全局样式
     ├── layouts/
-    │   ├── MainLayout.tsx          # 主布局（Ant Design Pro 风格）
-    │   ├── SiderMenu.tsx           # 侧边栏菜单
-    │   └── HeaderBar.tsx           # 顶部导航
+    │   └── MainLayout.tsx          # ProLayout 主布局（含菜单和顶部导航）
     ├── components/                 # 全局公共组件
     ├── store/                      # Zustand Store
     ├── mock/                       # Mock 数据层
@@ -579,21 +742,25 @@ prd/prototype/
     └── pages/                      # 页面组件
 ```
 
-**布局组件说明**（Ant Design Pro 风格）：
+**⚠️ 关键依赖**：安装 `@ant-design/pro-components` 实现 ProLayout、PageContainer 等组件：
+
+```json
+{
+  "@ant-design/pro-components": "^2.x"
+}
+```
+
+**布局组件说明**（严格使用 ProLayout，禁止手动实现）：
 
 ```
-MainLayout（主布局）
-├── ProLayout 风格
-├── SiderMenu（侧边栏）
-│   ├── Logo 区域
-│   └── 菜单（基于 nav_items 配置）
-├── HeaderBar（顶部）
-│   ├── 面包屑
-│   ├── 通知
-│   └── 用户信息
-└── Content（内容区）
-    └── <Outlet />（路由渲染）
+MainLayout = ProLayout 组件（@ant-design/pro-components）
+├── 侧边栏：208px 固定，纯白背景，当前选中 #1677FF 高亮
+├── 顶部栏：与侧边栏一体，纯白，右侧搜索+通知+用户头像
+├── 内容区：PageContainer 包裹，面包屑自动生成
+└── 所有页面用 <Outlet /> 渲染在 ProLayout 内
 ```
+
+**⚠️ 禁止手动实现布局**：不要写 `<Layout><Sider><Header><Content>` 这种结构，必须用 ProLayout。
 
 **路由配置**（React Router v6）：
 
@@ -718,6 +885,97 @@ pages/user-management/
 ✅ 侧边栏菜单配置完成
 ✅ 面包屑导航配置完成
 ```
+
+---
+
+#### 步骤 10.5R：运行与构建验证
+
+**⚠️ 这是保证项目可运行的关键步骤！必须实际执行安装和构建命令！**
+
+```
+🔧 开始运行与构建验证...
+```
+
+##### 10.5R.1 安装依赖
+
+```bash
+cd prd/prototype && pnpm install
+```
+
+```
+📦 安装项目依赖...
+
+├── 包管理器：pnpm
+├── 依赖数量：约 XX 个包
+└── 安装结果：✅ 成功 / ❌ 失败
+```
+
+**如果安装失败**：
+- 检查 `package.json` 中的依赖版本是否有效
+- 修复版本冲突或无效的包名
+- 重试安装（最多 2 次）
+
+##### 10.5R.2 TypeScript 编译检查
+
+```bash
+cd prd/prototype && npx tsc --noEmit
+```
+
+```
+🔍 TypeScript 编译检查...
+
+├── 检查文件：XX 个 .ts/.tsx 文件
+├── 错误数量：0 个 ✅ / N 个 ❌
+└── 检查结果：✅ 通过 / ❌ 失败
+```
+
+**如果有编译错误**：
+1. 列出所有 TypeScript 错误详情
+2. 逐一修复错误（类型不匹配、缺失导入、未定义变量等）
+3. 重新运行 `tsc --noEmit` 验证
+4. 最多重试 3 次，仍失败则记录剩余错误并继续构建验证
+
+##### 10.5R.3 构建验证
+
+```bash
+cd prd/prototype && pnpm build
+```
+
+```
+🏗️ 构建项目...
+
+├── 构建工具：Vite
+├── 构建结果：✅ 成功 / ❌ 失败
+├── 输出目录：dist/
+└── 构建产物大小：XX KB（gzip）
+```
+
+**如果构建失败**：
+1. 分析构建错误日志，定位具体文件和原因
+2. 修复问题（常见原因：未处理的导入、CSS Modules 路径错误、JSX 语法问题）
+3. 重新运行 `pnpm build` 验证
+4. 最多重试 3 次
+
+##### 10.5R.4 验证结果处理
+
+```
+📊 运行与构建验证结果：
+
+┌─────────────────────────────────────────────────┐
+│  检查项              │ 结果    │ 详情           │
+├─────────────────────────────────────────────────┤
+│  依赖安装            │ ✅ 通过  │ XX 个包已安装  │
+│  TypeScript 编译     │ ✅ 通过  │ 0 个错误       │
+│  项目构建            │ ✅ 通过  │ dist/ XX KB    │
+└─────────────────────────────────────────────────┘
+```
+
+**⚠️ 如果构建通过**：继续步骤 11R
+**⚠️ 如果构建失败**：
+1. 展示所有未修复的错误详情
+2. 记录到 `build_errors.md` 文件
+3. 告知用户哪些页面/组件存在问题
+4. 用户可选择：让 AI 继续修复 / 接受当前结果手动修复
 
 ---
 

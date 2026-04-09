@@ -55,6 +55,7 @@ prd/                → prd/prototype/
 │  └── 不合格则重试（最多2次）                                  │
 ├─────────────────────────────────────────────────────────────┤
 │  阶段3: 最终完整性检查                                        │
+│  ├── 运行与构建验证（pnpm install + tsc + pnpm build）         │
 │  ├── 页面清单核对（pages.json vs 实际文件）                   │
 │  ├── 链接有效性检查（href 目标是否存在）                      │
 │  ├── 导航一致性检查（侧边栏菜单是否匹配）                      │
@@ -177,13 +178,14 @@ prd/prototype/                  # 原型目录（固定路径）
 4. 选择使用人身份 → 研发人员
 5. 确认技术栈：React 18 + Ant Design + Zustand + React Router v6
 5.5. 检测并安装依赖 Skills（vercel-react-best-practices、vercel-composition-patterns）
-6. 全局分析与组件设计（提取公共组件、类型定义、Mock 数据，使用 composition-patterns）
+6. 全局分析与组件设计（提取公共组件、类型定义、Mock 数据，使用 composition-patterns） + 视觉风格选择
 7. 生成项目脚手架（Vite + TypeScript + SPA 架构）
 8. 生成全局公共组件（CommonTable、CommonModal 等）
 9. 逐页生成页面组件（使用 react-best-practices 确保代码质量）
 10. 路由注册与整合
-11. 最终完整性检查（TypeScript 编译、路由、Mock 数据）
-12. 确认完成，提示 pnpm run dev
+11. 运行与构建验证（pnpm install + tsc --noEmit + pnpm build，失败则修复重试）
+12. 最终完整性检查（TypeScript 编译、路由、Mock 数据、构建产物）
+13. 确认完成，提示 pnpm run dev
 
 ### check 命令
 
@@ -315,6 +317,7 @@ prd/prototype/                  # 原型目录（固定路径）
 ### 研发人员模式特点
 
 - **SPA 架构**：React Router v6 路由，Ant Design Pro 风格布局
+- **视觉风格**：Ant Design Pro 官方规范（preview.pro.ant.design），固定蚂蚁蓝 #1677FF 主色
 - **组件拆分**：先分析全局公共组件，再逐页生成页面组件
 - **类型安全**：完整 TypeScript 类型定义
 - **Mock 数据**：内置模拟数据层，无需后端即可运行
@@ -324,7 +327,9 @@ prd/prototype/                  # 原型目录（固定路径）
 
 ## 🎨 预设设计风格选择
 
-**⚠️ 仅"需求、项目经理"模式进入此步骤**
+**⚠️ 需求/项目经理模式**：进入下方完整设计风格选择流程（4 种预设 JSON 风格 + 自定义输入）。
+
+**⚠️ 研发人员模式**：在步骤 6R.4.5 中进行视觉风格选择（4 种预设 + 自定义），通过 Ant Design ConfigProvider + CSS 变量应用。
 
 在生成原型前，提供预设设计风格供用户选择，支持自定义输入。
 
@@ -363,4 +368,4 @@ prd/prototype/                  # 原型目录（固定路径）
 
 ---
 
-*最后更新：2026-04-09 (研发人员模式完整流程 + React SPA 架构)*
+*最后更新：2026-04-09 (研发人员模式完整流程 + 运行与构建验证机制)*
