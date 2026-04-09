@@ -1,0 +1,121 @@
+{
+  "style_name": "Arco Design 2.x - 字节跳动企业级中后台设计",
+  "style_id": "style_arco",
+  "design_philosophy": {
+    "简洁直观": {
+      "功能可见性": [
+        "界面层级清晰，核心操作突出",
+        "组件标准化，符合操作习惯",
+        "导航扁平化，状态直观可感知",
+        "交互无歧义，操作简洁"
+      ],
+      "feedback": [
+        "即时视觉反馈",
+        "轻量级非模态反馈",
+        "错误提示精准，提供修复指引",
+        "样式统一无干扰"
+      ]
+    },
+    "高效易用": {
+      "可视化": [
+        "数据结构化，信息模块化",
+        "8px栅格系统，布局规整",
+        "次要功能收纳，核心优先展示",
+        "动效克制，提升流畅度"
+      ],
+      "流畅": [
+        "表单自动填充，智能推荐",
+        "批量/快捷操作全覆盖"
+      ]
+    },
+    "统一规范": {
+      "一致性": [
+        "全平台色彩组件交互统一",
+        "严格遵循原生设计语言",
+        "禁止非标样式"
+      ],
+      "adapt": [
+        "明暗双主题",
+        "响应式适配多屏幕"
+      ]
+    }
+  },
+  "general_constraints": {
+    "forced_rules": [
+      "8px基础栅格系统",
+      "仅使用官方组件",
+      "全局样式统一"
+    ],
+    "responsive": ["PC端专属", "最小宽度1280px"],
+    "accessibility": "WCAG 2.1标准"
+  },
+  "global_style": {
+    "color": {
+      "primary_color": {
+        "main": "#165DFF",
+        "success": "#00B42A",
+        "warning": "#FF7D00",
+        "error": "#F53F3F"
+      },
+      "neutral_color": {
+        "title_text": "#1D2129",
+        "assist_text": "#4E5969",
+        "disable_text": "#C9CDD4",
+        "divider_line": "#E5E6EB",
+        "page_bg": "#FFFFFF"
+      }
+    },
+    "font": {
+      "font_size": {
+        "h1": "28px/40px，Bold",
+        "h3": "20px/28px，Medium",
+        "body": "14px/22px，Regular/Medium"
+      },
+      "font_weight": "400/500/600/700"
+    },
+    "layout": {
+      "base_unit": "8px",
+      "spacing": {
+        "card_padding": "上下20px，左右24px"
+      }
+    }
+  },
+  "copywriting_rules": {
+    "principle": ["简洁、专业、直观"],
+    "spec": ["用词统一", "长度克制"]
+  },
+  "form_rules": {
+    "layout": "标签左对齐",
+    "verify_rule": "失焦校验+行内提示",
+    "error_style": "红色边框+文字提示"
+  },
+  "component_rules": {
+    "nav": {
+      "dropdown": "112-320px",
+      "pagination": "默认10条/页"
+    },
+    "table": {
+      "basic": "表头40px/内容48px",
+      "tree_table": "异步懒加载展开"
+    }
+  },
+  "state_rules": ["默认", "悬浮", "激活", "禁用", "加载", "选中"],
+  "animation_rules": {
+    "duration": "250ms",
+    "easing": "ease-out"
+  },
+  "interaction_rules": {
+    "feedback": "全操作状态反馈，加载态标准化",
+    "exception": "统一错误提示",
+    "simplify": "操作收纳，高频功能外露"
+  },
+  "dark_mode": {
+    "support": true,
+    "desc": "支持明暗主题自动切换"
+  },
+  "ai_quick_guide": {
+    "primary_color": "#165DFF",
+    "base_unit": "8px",
+    "core_style": "字节跳动官方企业级设计"
+  }
+}

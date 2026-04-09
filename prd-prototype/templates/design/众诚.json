@@ -1,0 +1,180 @@
+{
+  "style_name": "众诚 - 企业级中后台极简高效设计",
+  "style_id": "style_zhongcheng",
+  "design_philosophy": {
+    "清晰明确": {
+      "功能可见性": [
+        "核心功能的关键操作可发现、易操作",
+        "界面间的跳转关系符合层级逻辑",
+        "使用符合用户习惯的控件样式",
+        "导航系统明确清晰并标注用户当前位置"
+      ],
+      "feedback": [
+        "优先提供非模态反馈",
+        "每个交互操作后必须有对应反馈",
+        "反馈需包含下一步操作建议",
+        "交互/视觉反馈清晰，语言通俗易懂"
+      ]
+    },
+    "干净简洁": {
+      "可视化": [
+        "复杂数据/表格以信息图呈现",
+        "相同属性元素分组展示",
+        "仅展示主功能和关键操作，高级功能可隐藏",
+        "非用户参与的交互由后台完成"
+      ],
+      "流畅": [
+        "高频输入项默认填充高频值",
+        "系统自动匹配/填充用户输入内容"
+      ]
+    },
+    "体验一致": {
+      "一致性": [
+        "全页面设计元素、组件、交互保持统一",
+        "需求与规范冲突时，优先升级规范"
+      ],
+      "适应": [
+        "优化体验不佳的原有设计",
+        "为资深用户提供自定义/快捷方式"
+      ]
+    }
+  },
+  "general_constraints": {
+    "forced_rules": [
+      "所有尺寸、间距必须为4的倍数",
+      "禁止自定义非标样式与交互",
+      "仅使用规范内定义的色值"
+    ],
+    "responsive": [
+      "仅适配PC桌面端",
+      "最小兼容屏幕宽度：1280px"
+    ],
+    "accessibility": "完全符合WCAG 2.1无障碍设计标准"
+  },
+  "global_style": {
+    "color": {
+      "primary_color": {
+        "main": "#246FE5",
+        "success": "#3FBE72",
+        "warning": "#FFB800",
+        "error": "#F55047"
+      },
+      "neutral_color": {
+        "title_text": "#1B2129",
+        "bold_title": "#2E3742",
+        "assist_text": "#626C78",
+        "desc_text": "#8B949E",
+        "disable_text": "#C4C9CF",
+        "divider_line": "#E1E5EB",
+        "hover_bg": "#EDF1F5",
+        "header_bg": "#F1F4F6",
+        "page_bg": "#F7F9FA"
+      },
+      "function_bg": {
+        "info": "#EBF6FF",
+        "success": "#EBFFEB",
+        "warning": "#FFFBE6",
+        "error": "#FFF5F5"
+      }
+    },
+    "font": {
+      "font_size": {
+        "h1": "24px/32px，Medium/Semibold",
+        "h2": "20px/28px，Medium/Semibold",
+        "h3": "16px/24px，Medium",
+        "body": "14px/22px，Medium/Regular",
+        "assist": "12px/18px，Regular"
+      },
+      "font_weight": "仅使用Regular、Medium、Semibold",
+      "font_color": {
+        "normal": "#1B2129",
+        "disable": "#C4C9CF",
+        "reverse": "#FFFFFF"
+      }
+    },
+    "layout": {
+      "base_unit": "4px",
+      "spacing": {
+        "card_gap": "16px",
+        "card_padding": "上下24px，左右32px",
+        "btn_solid_gap": "12px",
+        "btn_text_gap": "16px"
+      }
+    },
+    "icon": {
+      "type": {
+        "entry_semantic": "面性图标",
+        "operation_nav": "线性图标"
+      },
+      "size": ["32×32px", "24×24px", "20×20px", "16×16px"]
+    }
+  },
+  "copywriting_rules": {
+    "principle": ["语义准确无歧义", "语句简洁精炼", "语气友好平等", "全局用词统一"],
+    "spec": ["使用书面用语", "统一阿拉伯数字", "控制文案长度", "禁止口语化表达"]
+  },
+  "form_rules": {
+    "layout": "标签左对齐，输入框固定宽度",
+    "required_mark": "必填项前置红色星标",
+    "verify_rule": "失焦自动校验",
+    "error_style": "输入框标红 + hover悬浮提示",
+    "item_spacing": "16px"
+  },
+  "component_rules": {
+    "nav": {
+      "dropdown": {"min_width": "96px", "max_width": "320px"},
+      "tabs": {"max_count": 6, "min_width": "96px"},
+      "pagination": {"default_size": 20},
+      "breadcrumb": {"max_level": 3}
+    },
+    "display": {
+      "empty": {"size": "120×102px", "position": "水平居中、垂直2/5处"},
+      "tag": {"level": ["高", "中", "低"]},
+      "steps": ["水平", "垂直"],
+      "tree": ["父子联动", "仅末级选择"]
+    },
+    "table": {
+      "basic": {"row_height": "表头38px/内容48px"},
+      "editable": "失焦校验，错误标红",
+      "tree_table": "箭头点击展开/收起"
+    },
+    "message": {
+      "dialog": "点击蒙层不关闭",
+      "drawer": {"width": "240-960px"},
+      "message": "3秒自动消失",
+      "notification": "5秒自动消失"
+    },
+    "loading": {
+      "global": {"size": "200×200px", "timeout": "10秒"},
+      "local": {"size": "52×52px"}
+    }
+  },
+  "state_rules": {
+    "default": "默认正常状态",
+    "hover": "鼠标悬浮高亮",
+    "active": "点击按下状态",
+    "disabled": "置灰不可交互",
+    "checked": "主色高亮选中",
+    "readonly": "只读不可编辑"
+  },
+  "animation_rules": {
+    "duration": "200ms",
+    "easing": "ease-out",
+    "scope": "仅弹窗、切换、展开动效，无冗余动画"
+  },
+  "interaction_rules": {
+    "feedback": "所有操作必须有状态变化+视觉提示",
+    "exception": "断网、加载超时、失败统一提示",
+    "simplify": "次要操作收纳，高频功能自动填充"
+  },
+  "dark_mode": {
+    "support": false,
+    "desc": "暂不支持暗黑主题"
+  },
+  "ai_quick_guide": {
+    "primary_color": "#246FE5",
+    "base_unit": "4px",
+    "page_bg": "#F7F9FA",
+    "core_style": "极简、清晰、标准化中后台"
+  }
+}

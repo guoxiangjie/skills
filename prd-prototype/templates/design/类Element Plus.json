@@ -1,0 +1,103 @@
+{
+  "style_name": "Element Plus 2.x - Vue3 企业级中后台设计",
+  "style_id": "style_element",
+  "design_philosophy": {
+    "清晰易用": {
+      "功能可见性": [
+        "布局简洁，操作入口直观",
+        "组件经典通用，学习成本低",
+        "导航清晰，反馈明确",
+        "符合大众操作习惯"
+      ],
+      "feedback": [
+        "即时响应，视觉清晰",
+        "轻量提示，支持关闭",
+        "错误简洁，定位精准"
+      ]
+    },
+    "简约高效": {
+      "可视化": [
+        "展示规整，层级分明",
+        "8px栅格，布局标准",
+        "无冗余装饰，专注业务"
+      ],
+      "流畅": ["自动补全，预设默认值"]
+    },
+    "稳定一致": {
+      "一致性": ["全局样式统一", "仅用原生组件"],
+      "adapt": ["响应式布局", "支持主题自定义"]
+    }
+  },
+  "general_constraints": {
+    "forced_rules": ["8px栅格系统", "PC端优先", "主题色可配置"],
+    "responsive": ["最小宽度1024px"],
+    "accessibility": "WCAG 2.1标准"
+  },
+  "global_style": {
+    "color": {
+      "primary_color": {
+        "main": "#409EFF",
+        "success": "#67C23A",
+        "warning": "#E6A23C",
+        "error": "#F56C6C"
+      },
+      "neutral_color": {
+        "title_text": "#303133",
+        "assist_text": "#606266",
+        "disable_text": "#C0C4CC",
+        "divider_line": "#E4E7ED",
+        "page_bg": "#FFFFFF"
+      }
+    },
+    "font": {
+      "font_size": {
+        "h1": "24px/34px，Bold",
+        "body": "14px/21px，Regular",
+        "assist": "12px/17px，Regular"
+      }
+    },
+    "layout": {
+      "base_unit": "8px",
+      "spacing": {
+        "card_padding": "上下18px，左右20px"
+      }
+    }
+  },
+  "copywriting_rules": {
+    "principle": ["简约、清晰、通用"],
+    "spec": ["口语化适度", "简洁易懂"]
+  },
+  "form_rules": {
+    "layout": "标签左对齐",
+    "verify_rule": "失焦校验",
+    "error_style": "tooltip悬浮错误提示"
+  },
+  "component_rules": {
+    "nav": {
+      "dropdown": "112-300px",
+      "breadcrumb": "最大4级"
+    },
+    "table": {
+      "basic": "表头36px/内容44px"
+    }
+  },
+  "state_rules": ["默认", "悬浮", "激活", "禁用", "加载", "选中"],
+  "animation_rules": {
+    "duration": "200ms",
+    "easing": "ease"
+  },
+  "interaction_rules": {
+    "feedback": "按钮loading，操作状态可视化",
+    "exception": "统一提示",
+    "simplify": "操作收纳，快捷操作"
+  },
+  "dark_mode": {
+    "support": true,
+    "desc": "支持暗黑主题"
+  },
+  "ai_quick_guide": {
+    "primary_color": "#409EFF",
+    "base_unit": "8px",
+    "core_style": "Vue3 经典中后台设计"
+  }
+}

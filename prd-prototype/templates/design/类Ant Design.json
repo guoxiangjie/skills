@@ -1,0 +1,168 @@
+{
+  "style_name": "Ant Design 5.x - 阿里企业级中后台设计",
+  "style_id": "style_antd",
+  "design_philosophy": {
+    "确定性": {
+      "功能可见性": [
+        "界面逻辑清晰，操作路径唯一",
+        "组件标准化，符合用户认知",
+        "导航扁平化，状态可感知",
+        "交互无歧义，操作统一"
+      ],
+      "feedback": [
+        "交互即时视觉反馈",
+        "轻量无干扰，自动消失",
+        "错误精准定位，提供方案",
+        "遵循标准反馈规范"
+      ]
+    },
+    "自然流畅": {
+      "可视化": [
+        "数据可视化，信息结构化",
+        "8px栅格系统，布局规整",
+        "核心功能外露，次要功能收纳",
+        "动效自然，无突兀变化"
+      ],
+      "流畅": [
+        "表单自动补全，默认值推荐",
+        "简化流程，减少点击步骤"
+      ]
+    },
+    "体验一致": {
+      "一致性": [
+        "全平台组件视觉交互统一",
+        "严格遵循官方设计语言",
+        "色彩字体间距全局标准化"
+      ],
+      "adapt": [
+        "响应式适配多端",
+        "支持快捷操作与自定义"
+      ]
+    }
+  },
+  "general_constraints": {
+    "forced_rules": [
+      "严格遵循8px基础栅格系统",
+      "仅使用官方原生组件",
+      "支持明暗双主题自动切换"
+    ],
+    "responsive": [
+      "PC端优先，兼容平板",
+      "最小兼容屏幕宽度：1024px"
+    ],
+    "accessibility": "符合WCAG 2.1 AA级标准"
+  },
+  "global_style": {
+    "color": {
+      "primary_color": {
+        "main": "#165DFF",
+        "success": "#52C41A",
+        "warning": "#FAAD14",
+        "error": "#FF4D4F"
+      },
+      "neutral_color": {
+        "title_text": "#1F2329",
+        "bold_title": "#1F2329",
+        "assist_text": "#6B778C",
+        "desc_text": "#86909C",
+        "disable_text": "#C9CDD4",
+        "divider_line": "#E5E6EB",
+        "hover_bg": "#F2F3F5",
+        "header_bg": "#FAFAFA",
+        "page_bg": "#FFFFFF"
+      },
+      "function_bg": {
+        "info": "#E8F3FF",
+        "success": "#F0FFF0",
+        "warning": "#FFFBE6",
+        "error": "#FFF1F0"
+      }
+    },
+    "font": {
+      "font_size": {
+        "h1": "32px/44px，Bold",
+        "h2": "28px/40px，Semibold",
+        "h3": "24px/32px，Semibold",
+        "body": "14px/22px，Regular/Medium",
+        "assist": "12px/18px，Regular"
+      },
+      "font_weight": "Regular(400)、Medium(500)、Semibold(600)、Bold(700)",
+      "font_color": {
+        "normal": "#1F2329",
+        "disable": "#C9CDD4",
+        "reverse": "#FFFFFF"
+      }
+    },
+    "layout": {
+      "base_unit": "8px",
+      "spacing": {
+        "card_gap": "16px",
+        "card_padding": "上下16px，左右24px",
+        "btn_solid_gap": "8px"
+      }
+    },
+    "icon": {
+      "type": "全场景线性图标",
+      "size": ["32×32px", "24×24px", "20×20px", "16×16px"]
+    }
+  },
+  "copywriting_rules": {
+    "principle": ["简洁、准确、正式、统一"],
+    "spec": ["专业书面语", "数字标准化", "无冗余文案"]
+  },
+  "form_rules": {
+    "layout": "标签左对齐/顶部对齐",
+    "required_mark": "红色星标",
+    "verify_rule": "实时校验 + 底部提示文案",
+    "error_style": "输入框边框标红",
+    "item_spacing": "16px"
+  },
+  "component_rules": {
+    "nav": {
+      "dropdown": {"min_width": "120px"},
+      "tabs": {"max_count": 8},
+      "pagination": {"default_size": 10},
+      "breadcrumb": {"max_level": 5}
+    },
+    "display": {
+      "empty": {"size": "120×120px", "position": "垂直水平居中"},
+      "steps": ["水平", "垂直", "导航型"]
+    },
+    "table": {
+      "basic": {"row_height": "表头40px/内容48px"},
+      "editable": "提交/失焦双重校验"
+    },
+    "message": {
+      "dialog": "蒙层点击可配置",
+      "message": "24px顶部间距，3秒消失"
+    }
+  },
+  "state_rules": {
+    "default": "默认",
+    "hover": "悬浮",
+    "active": "激活",
+    "disabled": "禁用",
+    "loading": "加载中",
+    "checked": "选中"
+  },
+  "animation_rules": {
+    "duration": "300ms",
+    "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "scope": "官方标准过渡动效"
+  },
+  "interaction_rules": {
+    "feedback": "操作状态+轻量提示，按钮支持loading",
+    "exception": "网络/加载/校验统一提示",
+    "simplify": "批量操作收纳，支持键盘快捷操作"
+  },
+  "dark_mode": {
+    "support": true,
+    "desc": "自动适配明暗主题色值"
+  },
+  "ai_quick_guide": {
+    "primary_color": "#165DFF",
+    "base_unit": "8px",
+    "page_bg": "#FFFFFF",
+    "core_style": "阿里官方企业级中后台"
+  }
+}
